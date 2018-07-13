@@ -1,0 +1,74 @@
+﻿<Page xmlns:Controls="clr-namespace:ControlAtraso.Controls;assembly=ControlAtraso.Controls"  x:Class="ControlAtraso.UI.Configuracion.Configuracion"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:viewmodel="clr-namespace:ControlAtraso.UI.MVVM.ViewModel"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Configuracion">
+
+    <Page.Resources>
+
+
+        <Style x:Key="textBoxInError" TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                Value="{Binding RelativeSource={RelativeSource Self}, 
+                       Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <viewmodel:Configuracion x:Key="configuracionViewModel" />
+    </Page.Resources>
+
+    <Grid DataContext="{StaticResource configuracionViewModel}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Name="First" Grid.Row="0" Margin="10,40,0,0" VerticalAlignment="Top" Width="640" Height="100" FontSize="48" FontWeight="Bold" Foreground="#425567">
+            Lo primero es lo primero...
+            <TextBlock.Triggers>
+                <EventTrigger RoutedEvent="TextBlock.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="First" Storyboard.TargetProperty="(TextBlock.Opacity)" From="0.0" To="1.0" Duration="0:0:2" AutoReverse="False"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </TextBlock.Triggers>
+        </TextBlock>
+
+        <TextBlock Name="Second" Grid.Row="1" Margin="0,20,0,0" VerticalAlignment="Top" Width="740" Height="100" FontSize="23" FontWeight="Bold" Foreground="#425567">
+            Por favor ingresa el R.B.D. de tu establecimiento
+            <TextBlock.Triggers>
+                <EventTrigger RoutedEvent="TextBlock.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="Second" Storyboard.TargetProperty="(TextBlock.Opacity)" From="0.0" To="1.0" Duration="0:0:3" AutoReverse="False"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </TextBlock.Triggers>
+        </TextBlock>
+
+        <Controls:TextBox Name="RbdCuerpo" Grid.Row="2" Text="{Binding Path=Usuario.Correo, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxInError}" Margin="150,20,550,0" FlowDirection="RightToLeft" Height="40" VerticalContentAlignment="Center" MaxLength="5" FontFamily="Verdana" FontSize="23" OnlyNumbers="True"/>
+        <Label Content="-" Grid.Row="2" HorizontalAlignment="Left" Margin="245,20,0,0" Height="40" VerticalAlignment="Center" FontFamily="Verdana" FontSize="23"/>
+        <Controls:TextBox Name="RbdDigito" Grid.Row="2" Text="{Binding RBDDigito}" Margin="270,20,490,0" Height="40" VerticalContentAlignment="Center" MaxLength="1" FontFamily="Verdana" HorizontalContentAlignment="Center" FontSize="23"/>
+
+        <Button Name="Forward" Grid.Row="3" HorizontalAlignment="Left" Margin="150,30,0,0" Height="40" Width="200" Background="#425567" Foreground="White" FontFamily="Verdana" FontSize="16" Command="{Binding ForwardCommand}">
+            <DockPanel>
+                <Image Source="/Assets/Forward.png" Margin="0,0,10,0"/>
+                <TextBlock Margin="0,7,0,0">
+                            Seguir Adelante
+                </TextBlock>
+            </DockPanel>
+        </Button>
+
+    </Grid>
+</Page>

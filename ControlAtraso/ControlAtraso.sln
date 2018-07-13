@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlAtraso.UI", "ControlAtraso.UI\ControlAtraso.UI.csproj", "{ADF1F6B0-5D1F-48AF-B788-60803445EB9E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Libraries", "0. Libraries", "{71E1771F-E569-4B3D-8849-EE6EB052A1F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Model", "1. Model", "{A5C1F45C-23F7-4AB7-80E3-6FEE26F7451F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Service", "2. Service", "{F62C5F99-B7CC-43FB-B6D3-41F6B8CBB407}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Controls", "3. Controls", "{43CE1915-5476-4E9E-A75E-BD36C8C90AE7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Clients", "4. Clients", "{F201BFB8-BD41-49C6-A56C-2151E9407697}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{62CA8A37-E7CF-483A-92B1-2D8036111B1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlAtraso.Controls", "ControlAtraso.Controls\ControlAtraso.Controls.csproj", "{A3731C18-9B47-4B8E-AB70-E45BE3E36F9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlAtraso", "ControlAtraso\ControlAtraso.csproj", "{D4D34AEB-5B50-44EE-B9CD-BA2BE728793E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ADF1F6B0-5D1F-48AF-B788-60803445EB9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADF1F6B0-5D1F-48AF-B788-60803445EB9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADF1F6B0-5D1F-48AF-B788-60803445EB9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADF1F6B0-5D1F-48AF-B788-60803445EB9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3731C18-9B47-4B8E-AB70-E45BE3E36F9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3731C18-9B47-4B8E-AB70-E45BE3E36F9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3731C18-9B47-4B8E-AB70-E45BE3E36F9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3731C18-9B47-4B8E-AB70-E45BE3E36F9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4D34AEB-5B50-44EE-B9CD-BA2BE728793E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4D34AEB-5B50-44EE-B9CD-BA2BE728793E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4D34AEB-5B50-44EE-B9CD-BA2BE728793E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4D34AEB-5B50-44EE-B9CD-BA2BE728793E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ADF1F6B0-5D1F-48AF-B788-60803445EB9E} = {62CA8A37-E7CF-483A-92B1-2D8036111B1C}
+		{62CA8A37-E7CF-483A-92B1-2D8036111B1C} = {F201BFB8-BD41-49C6-A56C-2151E9407697}
+		{A3731C18-9B47-4B8E-AB70-E45BE3E36F9C} = {43CE1915-5476-4E9E-A75E-BD36C8C90AE7}
+		{D4D34AEB-5B50-44EE-B9CD-BA2BE728793E} = {A5C1F45C-23F7-4AB7-80E3-6FEE26F7451F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CA48047B-7CDC-419C-9C5E-8EB67C438BD9}
+	EndGlobalSection
+EndGlobal
