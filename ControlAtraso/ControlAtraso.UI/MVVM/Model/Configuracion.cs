@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace ControlAtraso.UI.ViewModel.Model
 {
@@ -21,10 +23,10 @@ namespace ControlAtraso.UI.ViewModel.Model
             }
             set
             {
-                Validator.ValidateProperty(value, new ValidationContext(this, null, null)
-                {
-                    MemberName = "RBDCuerpo"
-                });
+                //Validator.ValidateProperty(value, new ValidationContext(this, null, null)
+                //{
+                //    MemberName = "RBDCuerpo"
+                //});
 
                 rbdCuerpo = value;
 

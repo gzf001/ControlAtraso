@@ -4,24 +4,16 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:viewmodel="clr-namespace:ControlAtraso.UI.MVVM.ViewModel"
+      xmlns:validation="clr-namespace:ControlAtraso.UI.MVVM.Validation"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Configuracion">
-
+      Title="Configuracion"
+      Loaded="Page_Loaded">
+    
     <Page.Resources>
-
-
-        <Style x:Key="textBoxInError" TargetType="TextBox">
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="true">
-                    <Setter Property="ToolTip"
-                Value="{Binding RelativeSource={RelativeSource Self}, 
-                       Path=(Validation.Errors)[0].ErrorContent}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        
         <viewmodel:Configuracion x:Key="configuracionViewModel" />
+        <validation:RequiredValidation x:Key="requiredValidation" />
+        <validation:Run x:Key="runValidation" />
     </Page.Resources>
 
     <Grid DataContext="{StaticResource configuracionViewModel}">
@@ -31,6 +23,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+
         <TextBlock Name="First" Grid.Row="0" Margin="10,40,0,0" VerticalAlignment="Top" Width="640" Height="100" FontSize="48" FontWeight="Bold" Foreground="#425567">
             Lo primero es lo primero...
             <TextBlock.Triggers>
@@ -57,11 +50,29 @@
             </TextBlock.Triggers>
         </TextBlock>
 
-        <Controls:TextBox Name="RbdCuerpo" Grid.Row="2" Text="{Binding Path=Usuario.Correo, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource textBoxInError}" Margin="150,20,550,0" FlowDirection="RightToLeft" Height="40" VerticalContentAlignment="Center" MaxLength="5" FontFamily="Verdana" FontSize="23" OnlyNumbers="True"/>
-        <Label Content="-" Grid.Row="2" HorizontalAlignment="Left" Margin="245,20,0,0" Height="40" VerticalAlignment="Center" FontFamily="Verdana" FontSize="23"/>
-        <Controls:TextBox Name="RbdDigito" Grid.Row="2" Text="{Binding RBDDigito}" Margin="270,20,490,0" Height="40" VerticalContentAlignment="Center" MaxLength="1" FontFamily="Verdana" HorizontalContentAlignment="Center" FontSize="23"/>
+        <Controls:TextBox Name="RbdCuerpo" Grid.Row="2" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" Margin="150,20,550,0" FlowDirection="RightToLeft" Height="40" VerticalContentAlignment="Center" MaxLength="5" FontFamily="Verdana" FontSize="23" OnlyNumbers="True">
+            <TextBox.Text>
+                <Binding Path="RBDCuerpo" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <validation:RequiredValidation Message="Debe ingresar el cuerpo del RBD"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </Controls:TextBox>
 
-        <Button Name="Forward" Grid.Row="3" HorizontalAlignment="Left" Margin="150,30,0,0" Height="40" Width="200" Background="#425567" Foreground="White" FontFamily="Verdana" FontSize="16" Command="{Binding ForwardCommand}">
+        <Label Content="-" Grid.Row="2" HorizontalAlignment="Left" Margin="245,20,0,0" Height="40" VerticalAlignment="Center" FontFamily="Verdana" FontSize="23"/>
+
+        <Controls:TextBox Name="RbdDigito" Grid.Row="2" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" Margin="270,20,490,0" Height="40" VerticalContentAlignment="Center" MaxLength="1" FontFamily="Verdana" HorizontalContentAlignment="Center" FontSize="23" CharacterCasing="Upper" PreviewTextInput="RbdDigito_PreviewTextInput">
+            <TextBox.Text>
+                <Binding Path="RBDDigito" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <validation:RequiredValidation Message="Debe ingresar el cuerpo del RBD"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </Controls:TextBox>
+
+        <Button Name="Forward" Grid.Row="3" HorizontalAlignment="Left" Margin="150,30,0,0" Height="40" Width="200" Background="#425567" Foreground="White" FontFamily="Verdana" FontSize="16" Click="Forward_Click">
             <DockPanel>
                 <Image Source="/Assets/Forward.png" Margin="0,0,10,0"/>
                 <TextBlock Margin="0,7,0,0">
@@ -71,4 +82,5 @@
         </Button>
 
     </Grid>
+
 </Page>

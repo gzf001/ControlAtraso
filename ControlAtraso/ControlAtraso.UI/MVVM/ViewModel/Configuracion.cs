@@ -5,7 +5,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace ControlAtraso.UI.MVVM.ViewModel
 {
@@ -115,11 +117,11 @@ namespace ControlAtraso.UI.MVVM.ViewModel
 
         public Configuracion()
         {
-            //ControlAtraso.UI.ViewModel.Model.Configuracion c = new UI.ViewModel.Model.Configuracion
-            //{
-            //    RBDCuerpo = string.Empty,
-            //    RBDDigito = string.Empty
-            //};
+            ControlAtraso.UI.ViewModel.Model.Configuracion c = new UI.ViewModel.Model.Configuracion
+            {
+                RBDCuerpo = string.Empty,
+                RBDDigito = string.Empty
+            };
 
             this.ForwardCommand = new CommandBase(x => this.Forward());
         }
@@ -127,8 +129,6 @@ namespace ControlAtraso.UI.MVVM.ViewModel
         private void Forward()
         {
             
-            string cuerpo = this.RBDCuerpo;
-            string digito = this.RBDDigito;
         }
     }
 }

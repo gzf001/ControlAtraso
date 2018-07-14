@@ -61,6 +61,8 @@
     </Compile>
     <Compile Include="MVVM\CommandBase.cs" />
     <Compile Include="MVVM\NotifyBase.cs" />
+    <Compile Include="MVVM\Validation\RequiredValidation.cs" />
+    <Compile Include="MVVM\Validation\Run.cs" />
     <Compile Include="MVVM\ViewModel\Configuracion.cs" />
     <Compile Include="Registro\Registro.xaml.cs">
       <DependentUpon>Registro.xaml</DependentUpon>
@@ -119,6 +121,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
