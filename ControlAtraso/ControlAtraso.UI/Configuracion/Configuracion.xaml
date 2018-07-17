@@ -54,7 +54,7 @@
             <TextBox.Text>
                 <Binding Path="RBDCuerpo" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
-                        <validation:RequiredValidation Message="Debe ingresar el cuerpo del RBD"/>
+                        <validation:RequiredValidation Message="Debes ingresar el cuerpo del RBD"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
@@ -62,11 +62,11 @@
 
         <Label Content="-" Grid.Row="2" HorizontalAlignment="Left" Margin="245,20,0,0" Height="40" VerticalAlignment="Center" FontFamily="Verdana" FontSize="23"/>
 
-        <Controls:TextBox Name="RbdDigito" Grid.Row="2" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" Margin="270,20,490,0" Height="40" VerticalContentAlignment="Center" MaxLength="1" FontFamily="Verdana" HorizontalContentAlignment="Center" FontSize="23" CharacterCasing="Upper" PreviewTextInput="RbdDigito_PreviewTextInput">
+        <Controls:TextBox Name="RbdDigito" Grid.Row="2" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}" Margin="270,20,490,0" Height="40" VerticalContentAlignment="Center" MaxLength="1" FontFamily="Verdana" HorizontalContentAlignment="Center" FontSize="23" CharacterCasing="Upper" OnlyNumbers="True">
             <TextBox.Text>
                 <Binding Path="RBDDigito" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
-                        <validation:RequiredValidation Message="Debe ingresar el cuerpo del RBD"/>
+                        <validation:RequiredValidation Message="Debes ingresar el dígito verificador del RBD"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>

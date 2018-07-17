@@ -60,10 +60,12 @@
       <DependentUpon>Configuracion.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\CommandBase.cs" />
+    <Compile Include="MVVM\Model\Enrolamiento.cs" />
     <Compile Include="MVVM\NotifyBase.cs" />
     <Compile Include="MVVM\Validation\RequiredValidation.cs" />
     <Compile Include="MVVM\Validation\Run.cs" />
     <Compile Include="MVVM\ViewModel\Configuracion.cs" />
+    <Compile Include="MVVM\ViewModel\Enrolamiento.cs" />
     <Compile Include="Registro\Registro.xaml.cs">
       <DependentUpon>Registro.xaml</DependentUpon>
     </Compile>

@@ -11,7 +11,7 @@ using System.Windows.Navigation;
 
 namespace ControlAtraso.UI.MVVM.ViewModel
 {
-    public class Configuracion : ObservableCollection<ControlAtraso.UI.ViewModel.Model.Configuracion>, INotifyPropertyChanged
+    public class Configuracion : ObservableCollection<ControlAtraso.UI.MVVM.Model.Configuracion>, INotifyPropertyChanged
     {
         public new event PropertyChangedEventHandler PropertyChanged;
 
@@ -74,7 +74,6 @@ namespace ControlAtraso.UI.MVVM.ViewModel
             }
         }
 
-        //[Required(ErrorMessage = "Debes ingresar el dígito verificador")]
         public string RBDDigito
         {
             get
@@ -117,7 +116,7 @@ namespace ControlAtraso.UI.MVVM.ViewModel
 
         public Configuracion()
         {
-            ControlAtraso.UI.ViewModel.Model.Configuracion c = new UI.ViewModel.Model.Configuracion
+            ControlAtraso.UI.MVVM.Model.Configuracion c = new UI.MVVM.Model.Configuracion
             {
                 RBDCuerpo = string.Empty,
                 RBDDigito = string.Empty

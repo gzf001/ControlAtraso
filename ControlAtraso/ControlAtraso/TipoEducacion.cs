@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,19 +9,10 @@ using System.Web.Script.Serialization;
 
 namespace ControlAtraso
 {
-    public class Configuracion
+    public class TipoEducacion
     {
-        public static ControlAtraso.Entity.Establecimiento Configurar(string startupPath, int rbdCuerpo, char rbdDigito)
+        public static List<ControlAtraso.Entity.TipoEducacion> GetAll()
         {
-            System.Configuration.Configuration configuration = System.Configuration.ConfigurationManager.OpenExeConfiguration(startupPath);
-
-            bool configurado = configuration.AppSettings.Settings.AllKeys.Any(x => x.Equals("rbd"));
-
-            if (configurado)
-            {
-                return new ControlAtraso.Entity.Establecimiento();
-            }
-
             Random random = new Random();
 
             int indice = random.Next(0, 4);
@@ -35,9 +25,11 @@ namespace ControlAtraso
 
             token = Convert.ToBase64String(encryted);
 
-            string url = System.Configuration.ConfigurationManager.AppSettings["Url"];
+            string url = System.Configuration.ConfigurationManager.AppSettings["targetUrl"];
 
-            url = string.Format("{0}/Establecimiento?rbdCuerpo={1}&rbdDigito={2}", url, rbdCuerpo, rbdDigito);
+            string rbdCuerpo = System.Configuration.ConfigurationManager.AppSettings["rbd"];
+
+            url = string.Format("{0}/TiposEducacion?anioNumero={1}&rbdCuerpo={2}&rbdDigito={3}", url, DateTime.Today.Year, rbdCuerpo.Substring(0, rbdCuerpo.Length - 1), rbdCuerpo.Substring(rbdCuerpo.Length - 1, 1));
 
             HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
 
@@ -60,17 +52,9 @@ namespace ControlAtraso
 
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
 
-            ControlAtraso.Entity.Establecimiento establecimiento = javaScriptSerializer.Deserialize<ControlAtraso.Entity.Establecimiento>(resp);
+            List<ControlAtraso.Entity.TipoEducacion> tiposEducacion = javaScriptSerializer.Deserialize<List<ControlAtraso.Entity.TipoEducacion>>(resp);
 
-            if (establecimiento.Estado.Equals("Válido"))
-            {
-                configuration.AppSettings.Settings.Add("rbd", string.Format("{0}{1}", rbdCuerpo, rbdDigito));
-                configuration.AppSettings.Settings.Add("targetUrl", establecimiento.Url);
-
-                configuration.Save();
-            }
-
-            return establecimiento;
+            return tiposEducacion;
         }
     }
 }

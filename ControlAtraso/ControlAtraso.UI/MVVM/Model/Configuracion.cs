@@ -7,14 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace ControlAtraso.UI.ViewModel.Model
+namespace ControlAtraso.UI.MVVM.Model
 {
     public class Configuracion : ControlAtraso.UI.MVVM.NotifyBase
     {
         private string rbdCuerpo;
         private string rbdDigito;
 
-        [Required(ErrorMessage = "Debes ingresar el cuerpo")]
         public string RBDCuerpo
         {
             get
@@ -23,11 +22,6 @@ namespace ControlAtraso.UI.ViewModel.Model
             }
             set
             {
-                //Validator.ValidateProperty(value, new ValidationContext(this, null, null)
-                //{
-                //    MemberName = "RBDCuerpo"
-                //});
-
                 rbdCuerpo = value;
 
                 OnPropertyChanged("RBDCuerpo");

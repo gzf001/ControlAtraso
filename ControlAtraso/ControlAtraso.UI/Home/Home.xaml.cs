@@ -25,6 +25,20 @@ namespace ControlAtraso.UI.Home
             InitializeComponent();
         }
 
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Threading.DispatcherTimer dispathcer = new System.Windows.Threading.DispatcherTimer();
+
+            dispathcer.Interval = new TimeSpan(0, 0, 1);
+
+            dispathcer.Tick += (x, y) =>
+            {
+                this.Now.Content = string.Format("{0} {1}", DateTime.Today.ToString("D", new System.Globalization.CultureInfo("es-ES")), DateTime.Now.ToLongTimeString());
+            };
+
+            dispathcer.Start();
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;

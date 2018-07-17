@@ -35,20 +35,6 @@ namespace ControlAtraso.UI.Configuracion
             }
         }
 
-        private void RbdDigito_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            long ascci = Convert.ToInt64(Convert.ToChar(e.Text));
-
-            if ((ascci >= 48 && ascci <= 57) || e.Text.ToUpper().Equals("K"))
-            {
-                e.Handled = false;
-            }
-            else
-            {
-                e.Handled = true;
-            }
-        }
-
         private void Forward_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(this.RbdCuerpo.Text) || string.IsNullOrEmpty(this.RbdDigito.Text))
@@ -62,15 +48,33 @@ namespace ControlAtraso.UI.Configuracion
 
                 if (ControlAtraso.Helper.GetDigito(int.Parse(cuerpo)).Equals(digito))
                 {
-                    ControlAtraso.Configuracion.Configurar(System.Environment.GetCommandLineArgs()[0], int.Parse(cuerpo), char.Parse(this.RbdDigito.Text.ToUpper()));
+                    ControlAtraso.Entity.Establecimiento establecimiento = ControlAtraso.Configuracion.Configurar(System.Environment.GetCommandLineArgs()[0], int.Parse(cuerpo), char.Parse(this.RbdDigito.Text.ToUpper()));
 
-                    NavigationService.Navigate(new ControlAtraso.UI.Home.Home());
+                    if (establecimiento.Estado.Equals("Válido"))
+                    {
+                        NavigationService.Navigate(new ControlAtraso.UI.Home.Home());
+                    }
+                    else
+                    {
+                        if (establecimiento.Mensaje.Contains("establecimiento no asociado"))
+                        {
+                            MessageBox.Show("Lamentablemente el R.B.D. ingresado no esta asociado a Insignia, o no esta configurado para acceder, por favor contacte a soporte@netcore.cl", "Insignia", MessageBoxButton.OK, MessageBoxImage.Stop);
+                        }
+                        else if (establecimiento.Mensaje.Equals("Token no válido"))
+                        {
+                            MessageBox.Show("Existe un error de comunicación con el servidor Insignia, por favor contacte a soporte@netcore.cl", "Insignia", MessageBoxButton.OK, MessageBoxImage.Stop);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Se ha producido un error de comunicación con el servidor Insignia, por favor contacte a soporte@netcore.cl", "Insignia", MessageBoxButton.OK, MessageBoxImage.Stop);
+                        }
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Por favor, verifica el R.B.D. que ingresaste", "Insignia", MessageBoxButton.OK, MessageBoxImage.Stop); 
+                    MessageBox.Show("Por favor, verifica el R.B.D. que ingresaste", "Insignia", MessageBoxButton.OK, MessageBoxImage.Stop);
                 }
             }
-        }        
+        }
     }
 }
