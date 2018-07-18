@@ -45,7 +45,7 @@ namespace ControlAtraso.UI.Home
 
             if (button.CommandParameter.Equals("enrolamiento"))
             {
-                NavigationService.Navigate(new ControlAtraso.UI.Enrolamiento.Enrolamiento());
+                NavigationService.Navigate(new ControlAtraso.UI.Enrolamiento.HomeEnrolamiento());
             }
             else
             {

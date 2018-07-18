@@ -16,11 +16,13 @@ namespace ControlAtraso.UI.MVVM.ViewModel
         private ICommand seekCommand;
 
         private int selectedIndex;
-        private string run;
+        private string runCuerpo;
+        private char runDigito;
         private string nombre;
         private ControlAtraso.Entity.TipoEducacion tipoEducacion;
         private ControlAtraso.Entity.Grado grado;
         private ControlAtraso.Entity.Curso curso;
+        private List<ControlAtraso.Entity.Alumno> alumnos;
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
@@ -42,7 +44,8 @@ namespace ControlAtraso.UI.MVVM.ViewModel
 
                 OnPropertyChanged("SelectedIndexOfCollection");
 
-                OnPropertyChanged("Run");
+                OnPropertyChanged("RunCuerpo");
+                OnPropertyChanged("RunDigito");
                 OnPropertyChanged("Nombre");
                 OnPropertyChanged("TipoEducacion");
                 OnPropertyChanged("Grado");
@@ -51,31 +54,59 @@ namespace ControlAtraso.UI.MVVM.ViewModel
             }
         }
 
-        public string Run
+        public string RunCuerpo
         {
             get
             {
                 if (this.SelectedIndexOfCollection > 0)
                 {
-                    return this.Items[this.SelectedIndexOfCollection].Run;
+                    return this.Items[this.SelectedIndexOfCollection].RunCuerpo;
                 }
                 else
                 {
-                    return run;
+                    return runCuerpo;
                 }
             }
             set
             {
                 if (this.SelectedIndexOfCollection > 0)
                 {
-                    this.Items[this.SelectedIndexOfCollection].Run = value;
+                    this.Items[this.SelectedIndexOfCollection].RunCuerpo = value;
                 }
                 else
                 {
-                    run = value;
+                    runCuerpo = value;
                 }
 
-                OnPropertyChanged("Run");
+                OnPropertyChanged("RunCuerpo");
+            }
+        }
+
+        public char RunDigito
+        {
+            get
+            {
+                if (this.SelectedIndexOfCollection > 0)
+                {
+                    return this.Items[this.SelectedIndexOfCollection].RunDigito;
+                }
+                else
+                {
+                    return runDigito;
+                }
+            }
+            set
+            {
+                if (this.SelectedIndexOfCollection > 0)
+                {
+                    this.Items[this.SelectedIndexOfCollection].RunDigito = value;
+                }
+                else
+                {
+                    runDigito = value;
+                }
+
+                OnPropertyChanged("RunDigito");
             }
         }
 
@@ -235,6 +266,8 @@ namespace ControlAtraso.UI.MVVM.ViewModel
 
                 OnPropertyChanged("Curso");
 
+                this.Alumnos = ControlAtraso.Alumno.GetAll(this.Curso);
+
                 OnPropertyChanged("Alumnos");
             }
         }
@@ -263,9 +296,11 @@ namespace ControlAtraso.UI.MVVM.ViewModel
         {
             get
             {
-                List<ControlAtraso.Entity.Alumno> alumnos = ControlAtraso.Alumno.GetAll(this.Curso);
-
                 return alumnos;
+            }
+            set
+            {
+                alumnos = value;
             }
         }
 
@@ -285,11 +320,9 @@ namespace ControlAtraso.UI.MVVM.ViewModel
         {
             ControlAtraso.UI.MVVM.Model.Enrolamiento c = new UI.MVVM.Model.Enrolamiento
             {
-                Run = string.Empty,
-                Nombre = string.Empty,
-                //TipoEducacionCodigo = string.Empty,
-                //GradoCodigo = string.Empty,
-                //CursoId = string.Empty
+                RunCuerpo = string.Empty,
+                RunDigito = ' ',
+                Nombre = string.Empty
             };
 
             this.SeekCommand = new CommandBase(x => this.Seek());
@@ -297,7 +330,35 @@ namespace ControlAtraso.UI.MVVM.ViewModel
 
         private void Seek()
         {
+            if (!string.IsNullOrEmpty(this.RunCuerpo))
+            {
+                this.Alumnos = ControlAtraso.Alumno.GetAll(int.Parse(this.RunCuerpo), this.RunDigito);
 
+                if (this.Alumnos[0].Persona == null)
+                {
+                    System.Windows.MessageBox.Show("La búsqueda no arrojo resultados", "Insignia", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                }
+
+                OnPropertyChanged("Alumnos");
+            }
+            else if (!string.IsNullOrEmpty(this.Nombre))
+            {
+                if (this.Nombre.Length < 4)
+                {
+                    System.Windows.MessageBox.Show("El largo del texto buscado debe ser mayor a 4 caracteres", "Insignia", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                }
+                else
+                {
+                    this.Alumnos = ControlAtraso.Alumno.GetAll(this.Nombre);
+
+                    if (this.Alumnos.Count == 0)
+                    {
+                        System.Windows.MessageBox.Show("La búsqueda no arrojo resultados", "Insignia", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                    }
+
+                    OnPropertyChanged("Alumnos");
+                }
+            }
         }
     }
 }

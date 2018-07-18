@@ -59,6 +59,9 @@
     <Compile Include="Configuracion\Configuracion.xaml.cs">
       <DependentUpon>Configuracion.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Enrolamiento\HomeEnrolamiento.xaml.cs">
+      <DependentUpon>HomeEnrolamiento.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MVVM\CommandBase.cs" />
     <Compile Include="MVVM\Model\Enrolamiento.cs" />
     <Compile Include="MVVM\NotifyBase.cs" />
@@ -75,6 +78,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Enrolamiento\Enrolamiento.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Enrolamiento\HomeEnrolamiento.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

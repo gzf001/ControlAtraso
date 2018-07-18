@@ -8,23 +8,38 @@ namespace ControlAtraso.UI.MVVM.Model
 {
     public class Enrolamiento : ControlAtraso.UI.MVVM.NotifyBase
     {
-        private string run;
+        private string runCuerpo;
+        private char runDigito;
         private string nombre;
         private ControlAtraso.Entity.TipoEducacion tipoEducacion;
         private ControlAtraso.Entity.Grado grado;
         private ControlAtraso.Entity.Curso curso;
 
-        public string Run
+        public string RunCuerpo
         {
             get
             {
-                return run;
+                return runCuerpo;
             }
             set
             {
-                run = value;
+                runCuerpo = value;
 
-                OnPropertyChanged("Run");
+                OnPropertyChanged("RunCuerpo");
+            }
+        }
+
+        public char RunDigito
+        {
+            get
+            {
+                return runDigito;
+            }
+            set
+            {
+                runDigito = value;
+
+                OnPropertyChanged("RunDigito");
             }
         }
 
