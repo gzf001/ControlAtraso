@@ -37,7 +37,7 @@ namespace ControlAtraso.UI.Enrolamiento
 
                 this.LabelDigito.Content = digito;
 
-                (this.Grid.DataContext as ControlAtraso.UI.MVVM.ViewModel.Enrolamiento).RunDigito = digito;
+                (this.Grid.DataContext as ControlAtraso.UI.MVVM.ViewModel.HomeEnrolamiento).RunDigito = digito;
 
                 e.Handled = false;
             }
@@ -49,7 +49,9 @@ namespace ControlAtraso.UI.Enrolamiento
 
         private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            NavigationService.Navigate(new ControlAtraso.UI.Enrolamiento.Enrolamiento());
+            ControlAtraso.UI.Enrolamiento.Enrolamiento enrolamiento = new ControlAtraso.UI.Enrolamiento.Enrolamiento(this.DataGrid.SelectedItems[0] as ControlAtraso.Entity.Alumno);
+
+            NavigationService.Navigate(enrolamiento);
         }
     }
 }

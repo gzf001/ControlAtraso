@@ -10,7 +10,7 @@
       Title="Enrolamiento">
 
     <Page.Resources>
-        <viewmodel:Enrolamiento x:Key="enrolamientoViewModel" />
+        <viewmodel:HomeEnrolamiento x:Key="homeEnrolamientoViewModel" />
         <validation:RequiredValidation x:Key="requiredValidation" />
         <validation:Run x:Key="runValidation" />
 
@@ -25,7 +25,7 @@
 
     </Page.Resources>
 
-    <Grid Name="Grid" DataContext="{StaticResource enrolamientoViewModel}">
+    <Grid Name="Grid" DataContext="{StaticResource homeEnrolamientoViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>

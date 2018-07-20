@@ -13,16 +13,12 @@ namespace ControlAtraso.UI.MVVM.ViewModel
     {
         public new event PropertyChangedEventHandler PropertyChanged;
 
-        private ICommand seekCommand;
+        private ICommand saveCommand;
 
         private int selectedIndex;
-        private string runCuerpo;
-        private char runDigito;
+        private string run;
         private string nombre;
-        private ControlAtraso.Entity.TipoEducacion tipoEducacion;
-        private ControlAtraso.Entity.Grado grado;
-        private ControlAtraso.Entity.Curso curso;
-        private List<ControlAtraso.Entity.Alumno> alumnos;
+        private string curso;
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
@@ -44,69 +40,37 @@ namespace ControlAtraso.UI.MVVM.ViewModel
 
                 OnPropertyChanged("SelectedIndexOfCollection");
 
-                OnPropertyChanged("RunCuerpo");
-                OnPropertyChanged("RunDigito");
+                OnPropertyChanged("Run");
                 OnPropertyChanged("Nombre");
-                OnPropertyChanged("TipoEducacion");
-                OnPropertyChanged("Grado");
                 OnPropertyChanged("Curso");
-                OnPropertyChanged("Alumnos");
             }
         }
 
-        public string RunCuerpo
+        public string Run
         {
             get
             {
                 if (this.SelectedIndexOfCollection > 0)
                 {
-                    return this.Items[this.SelectedIndexOfCollection].RunCuerpo;
+                    return this.Items[this.SelectedIndexOfCollection].Run;
                 }
                 else
                 {
-                    return runCuerpo;
+                    return run;
                 }
             }
             set
             {
                 if (this.SelectedIndexOfCollection > 0)
                 {
-                    this.Items[this.SelectedIndexOfCollection].RunCuerpo = value;
+                    this.Items[this.SelectedIndexOfCollection].Run = value;
                 }
                 else
                 {
-                    runCuerpo = value;
+                    run = value;
                 }
 
-                OnPropertyChanged("RunCuerpo");
-            }
-        }
-
-        public char RunDigito
-        {
-            get
-            {
-                if (this.SelectedIndexOfCollection > 0)
-                {
-                    return this.Items[this.SelectedIndexOfCollection].RunDigito;
-                }
-                else
-                {
-                    return runDigito;
-                }
-            }
-            set
-            {
-                if (this.SelectedIndexOfCollection > 0)
-                {
-                    this.Items[this.SelectedIndexOfCollection].RunDigito = value;
-                }
-                else
-                {
-                    runDigito = value;
-                }
-
-                OnPropertyChanged("RunDigito");
+                OnPropertyChanged("Run");
             }
         }
 
@@ -138,109 +102,7 @@ namespace ControlAtraso.UI.MVVM.ViewModel
             }
         }
 
-        public ControlAtraso.Entity.TipoEducacion TipoEducacion
-        {
-            get
-            {
-                if (this.SelectedIndexOfCollection > 0)
-                {
-                    return this.Items[this.SelectedIndexOfCollection].TipoEducacion;
-                }
-                else
-                {
-                    return tipoEducacion;
-                }
-            }
-            set
-            {
-                if (this.SelectedIndexOfCollection > 0)
-                {
-                    this.Items[this.SelectedIndexOfCollection].TipoEducacion = value;
-                }
-                else
-                {
-                    tipoEducacion = value;
-                }
-
-                OnPropertyChanged("TipoEducacion");
-
-                OnPropertyChanged("Grados");
-
-                OnPropertyChanged("Cursos");
-            }
-        }
-
-        public List<ControlAtraso.Entity.TipoEducacion> TiposEducacion
-        {
-            get
-            {
-                ControlAtraso.Entity.TipoEducacion tipoEducacion = new ControlAtraso.Entity.TipoEducacion
-                {
-                    Codigo = -1,
-                    Nombre = "[Seleccione]"
-                };
-
-                List<ControlAtraso.Entity.TipoEducacion> tiposEducacion = ControlAtraso.TipoEducacion.GetAll();
-
-                tiposEducacion.Add(tipoEducacion);
-
-                tiposEducacion = tiposEducacion.OrderBy(x => x.Codigo).ToList<ControlAtraso.Entity.TipoEducacion>();
-
-                return tiposEducacion;
-            }
-        }
-
-        public ControlAtraso.Entity.Grado Grado
-        {
-            get
-            {
-                if (this.SelectedIndexOfCollection > 0)
-                {
-                    return this.Items[this.SelectedIndexOfCollection].Grado;
-                }
-                else
-                {
-                    return grado;
-                }
-            }
-            set
-            {
-                if (this.SelectedIndexOfCollection > 0)
-                {
-                    this.Items[this.SelectedIndexOfCollection].Grado = value;
-                }
-                else
-                {
-                    grado = value;
-                }
-
-                OnPropertyChanged("Grado");
-
-                OnPropertyChanged("Cursos");
-            }
-        }
-
-        public List<ControlAtraso.Entity.Grado> Grados
-        {
-            get
-            {
-                ControlAtraso.Entity.Grado tipoEducacion = new ControlAtraso.Entity.Grado
-                {
-                    Codigo = -1,
-                    Nombre = "[Seleccione]"
-                };
-
-                List<ControlAtraso.Entity.Grado> grados = ControlAtraso.Grado.GetAll(this.TipoEducacion);
-
-                grados.Add(tipoEducacion);
-
-                grados = grados.OrderBy(x => x.Codigo).ToList<ControlAtraso.Entity.Grado>();
-
-                return grados;
-            }
-        }
-
-        public ControlAtraso.Entity.Curso Curso
+        public string Curso
         {
             get
             {
@@ -265,100 +127,48 @@ namespace ControlAtraso.UI.MVVM.ViewModel
                 }
 
                 OnPropertyChanged("Curso");
-
-                this.Alumnos = ControlAtraso.Alumno.GetAll(this.Curso);
-
-                OnPropertyChanged("Alumnos");
             }
         }
 
-        public List<ControlAtraso.Entity.Curso> Cursos
+        public ICommand SaveCommand
         {
             get
             {
-                ControlAtraso.Entity.Curso curso = new ControlAtraso.Entity.Curso
-                {
-                    Id = default(Guid),
-                    Nombre = "[Seleccione]"
-                };
-
-                List<ControlAtraso.Entity.Curso> cursos = ControlAtraso.Curso.GetAll(this.Grado);
-
-                cursos.Add(curso);
-
-                cursos = cursos.OrderBy(x => x.GradoCodigo).ToList<ControlAtraso.Entity.Curso>();
-
-                return cursos;
-            }
-        }
-
-        public List<ControlAtraso.Entity.Alumno> Alumnos
-        {
-            get
-            {
-                return alumnos;
+                return saveCommand;
             }
             set
             {
-                alumnos = value;
-            }
-        }
-
-        public ICommand SeekCommand
-        {
-            get
-            {
-                return seekCommand;
-            }
-            set
-            {
-                seekCommand = value;
+                saveCommand = value;
             }
         }
 
         public Enrolamiento()
         {
-            ControlAtraso.UI.MVVM.Model.Enrolamiento c = new UI.MVVM.Model.Enrolamiento
+            ControlAtraso.UI.MVVM.Model.Enrolamiento e = new UI.MVVM.Model.Enrolamiento
             {
-                RunCuerpo = string.Empty,
-                RunDigito = ' ',
-                Nombre = string.Empty
+                Run = string.Empty,
+                Nombre = string.Empty,
+                Curso = string.Empty
             };
 
-            this.SeekCommand = new CommandBase(x => this.Seek());
+            this.SaveCommand = new CommandBase(x => this.Save());
         }
 
-        private void Seek()
+        public Enrolamiento(ControlAtraso.Entity.Alumno alumno)
         {
-            if (!string.IsNullOrEmpty(this.RunCuerpo))
+            ControlAtraso.UI.MVVM.Model.Enrolamiento e = new UI.MVVM.Model.Enrolamiento
             {
-                this.Alumnos = ControlAtraso.Alumno.GetAll(int.Parse(this.RunCuerpo), this.RunDigito);
+                Run = alumno.Persona.Run,
+                Nombre = alumno.Persona.Nombre,
+                Curso = alumno.Matricula.Curso
+            };
 
-                if (this.Alumnos[0].Persona == null)
-                {
-                    System.Windows.MessageBox.Show("La búsqueda no arrojo resultados", "Insignia", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
-                }
+            this.SaveCommand = new CommandBase(x => this.Save());
+        }
 
-                OnPropertyChanged("Alumnos");
-            }
-            else if (!string.IsNullOrEmpty(this.Nombre))
-            {
-                if (this.Nombre.Length < 4)
-                {
-                    System.Windows.MessageBox.Show("El largo del texto buscado debe ser mayor a 4 caracteres", "Insignia", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
-                }
-                else
-                {
-                    this.Alumnos = ControlAtraso.Alumno.GetAll(this.Nombre);
-
-                    if (this.Alumnos.Count == 0)
-                    {
-                        System.Windows.MessageBox.Show("La búsqueda no arrojo resultados", "Insignia", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
-                    }
-
-                    OnPropertyChanged("Alumnos");
-                }
-            }
+        private void Save()
+        {
+            
         }
     }
 }
