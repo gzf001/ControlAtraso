@@ -27,7 +27,13 @@ namespace ControlAtraso.UI.Enrolamiento
 
         private DPFP.Processing.Enrollment enroller;
 
-        delegate void DelegadoEstado(string message, string text, System.Windows.MessageBoxButton messageBoxButtons, System.Windows.MessageBoxImage messageBoxImage, Bitmap image);
+        private static ControlAtraso.Entity.Alumno Alumno
+        {
+            get;
+            set;
+        }
+
+        delegate void DelegadoEstado(string message, string estado, Bitmap src);
 
         public Enrolamiento(ControlAtraso.Entity.Alumno alumno)
         {
@@ -38,6 +44,15 @@ namespace ControlAtraso.UI.Enrolamiento
             this.Nombre.Content = alumno.Persona.Nombre;
 
             this.Curso.Content = alumno.Matricula.Curso;
+
+            ControlAtraso.UI.Enrolamiento.Enrolamiento.Alumno = alumno;
+
+            if (alumno.Persona.Enrolado)
+            {
+                this.Message.Content = "El alumno se encuentra enrolado";
+
+                this.HuellaPicture.Source = new BitmapImage(new Uri("/Assets/check.png", UriKind.Relative));
+            }
 
             capturer = new DPFP.Capture.Capture();
 
@@ -61,48 +76,142 @@ namespace ControlAtraso.UI.Enrolamiento
 
             convertor.ConvertToPicture(sample, ref bitmap);
 
-            this.Dispatcher.Invoke(delegado,"La huella fue leida de forma correcta", "Insignia", MessageBoxButton.OK, MessageBoxImage.Information, bitmap);
+            DPFP.Processing.FeatureExtraction Extractor = new DPFP.Processing.FeatureExtraction();
+
+            DPFP.Capture.CaptureFeedback feedback = DPFP.Capture.CaptureFeedback.None;
+
+            DPFP.FeatureSet feature = new DPFP.FeatureSet();
+
+            Extractor.CreateFeatureSet(sample, DPFP.Processing.DataPurpose.Enrollment, ref feedback, ref feature);
+
+            if (feedback == DPFP.Capture.CaptureFeedback.Good)
+            {
+                enroller.AddFeatures(feature);
+
+                switch (enroller.TemplateStatus)
+                {
+                    case DPFP.Processing.Enrollment.Status.Failed:
+                        {
+                            this.Dispatcher.Invoke(delegado, "La captura de la huella no fue correcta.\nPor favor reintente", "error", bitmap);
+
+                            break;
+                        }
+                    case DPFP.Processing.Enrollment.Status.Insufficient:
+                        {
+                            this.Dispatcher.Invoke(delegado, "La captura de la huella fue correcta.\nPor favor repita la lectura", "acierto", bitmap);
+
+                            break;
+                        }
+                    case DPFP.Processing.Enrollment.Status.Ready:
+                        {
+                            this.Dispatcher.Invoke(delegado, "La captura de la huella fue correcta.\nPor favor grabe la lectura realizada", "valido", bitmap);
+
+                            break;
+                        }
+                    default:
+                        {
+                            this.Dispatcher.Invoke(delegado, "La captura de la huella no fue correcta.\nPor favor reintente", "error", bitmap);
+
+                            break;
+                        }
+                }
+            }
+            else
+            {
+                this.Dispatcher.Invoke(delegado, "La captura de la huella no fue correcta.\n Por favor reintente", bitmap);
+            }
         }
 
-        void DPFP.Capture.EventHandler.OnFingerGone(object Capture, string ReaderSerialNumber)
+        void DPFP.Capture.EventHandler.OnFingerGone(object Capture, string readerSerialNumber)
         {
         }
 
-        void DPFP.Capture.EventHandler.OnFingerTouch(object Capture, string ReaderSerialNumber)
+        void DPFP.Capture.EventHandler.OnFingerTouch(object Capture, string readerSerialNumber)
+        {
+            this.Dispatcher.Invoke(new DelegadoEstado(this.Estado), string.Empty, string.Empty, null);
+        }
+
+        void DPFP.Capture.EventHandler.OnReaderConnect(object Capture, string readerSerialNumber)
         {
         }
 
-        void DPFP.Capture.EventHandler.OnReaderConnect(object Capture, string ReaderSerialNumber)
+        void DPFP.Capture.EventHandler.OnReaderDisconnect(object Capture, string readerSerialNumber)
+        {
+            MessageBox.Show("El lector se encuentra desconectado", "Insignia", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
+        }
+
+        void DPFP.Capture.EventHandler.OnSampleQuality(object Capture, string readerSerialNumber, CaptureFeedback captureFeedback)
         {
         }
 
-        void DPFP.Capture.EventHandler.OnReaderDisconnect(object Capture, string ReaderSerialNumber)
+        private void Estado(string message, string estado, Bitmap src)
         {
-        }
+            System.IO.MemoryStream ms = null;
 
-        void DPFP.Capture.EventHandler.OnSampleQuality(object Capture, string ReaderSerialNumber, CaptureFeedback CaptureFeedback)
-        {
-        }
+            if (src != null)
+            {
+                ms = new System.IO.MemoryStream();
 
-        private void Estado(string message, string text, System.Windows.MessageBoxButton messageBoxButtons, System.Windows.MessageBoxImage messageBoxImage, Bitmap src)
-        {
-            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+                src.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
 
-            (src as System.Drawing.Bitmap).Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                BitmapImage image = new BitmapImage();
 
-            BitmapImage image = new BitmapImage();
+                image.BeginInit();
 
-            image.BeginInit();
+                ms.Seek(0, System.IO.SeekOrigin.Begin);
 
-            ms.Seek(0, System.IO.SeekOrigin.Begin);
+                image.StreamSource = ms;
 
-            image.StreamSource = ms;
+                image.EndInit();
 
-            image.EndInit();
+                HuellaPicture.Source = image;
+            }
 
-            HuellaPicture.Source = image;
+            switch (estado)
+            {
+                case "acierto":
+                    {
+                        this.Message.Foreground = new System.Windows.Media.SolidColorBrush(new System.Windows.Media.Color
+                        {
+                            A = 255,
+                            R = 66,
+                            G = 85,
+                            B = 103
+                        });
 
-            MessageBox.Show(message, text, messageBoxButtons, messageBoxImage);
+                        break;
+                    }
+                case "error":
+                    {
+                        this.Message.Foreground = System.Windows.Media.Brushes.Red;
+
+                        break;
+                    }
+                case "valido":
+                    {
+                        ControlAtraso.Entity.Persona persona = new ControlAtraso.Entity.Persona
+                        {
+                            Id = ControlAtraso.UI.Enrolamiento.Enrolamiento.Alumno.Persona.Id,
+                            Huella = enroller.Template.Bytes,
+                            ImagenHuella = ms.GetBuffer()
+                        };
+
+                        ControlAtraso.Alumno.Enrolar(persona);
+
+                        if (capturer != null)
+                        {
+                            capturer.StopCapture();
+                        }
+
+                        MessageBox.Show("El alumno fue enrolado", "Insignia", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+
+                        NavigationService.Navigate(new ControlAtraso.UI.Enrolamiento.HomeEnrolamiento());
+
+                        break;
+                    }
+            }
+
+            this.Message.Content = message;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

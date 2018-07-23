@@ -6,69 +6,81 @@ using System.Threading.Tasks;
 
 namespace ControlAtraso.Entity
 {
-    public class Persona
+    public class RegistroAtraso
     {
-        public Guid Id
+        public int RbdCuerpo
         {
             get;
             set;
         }
 
-        public string Nombres
+        public int RbdDigito
         {
             get;
             set;
         }
 
-        public string Nombre
+        public Guid SostenedorId
         {
             get;
             set;
         }
 
-        public string ApellidoPaterno
+        public Guid EstablecimientoId
         {
             get;
             set;
         }
 
-        public string ApellidoMaterno
+        public Int32 AnoNumero
         {
             get;
             set;
         }
 
-        public int RunCuerpo
+        public Int32 TipoEducacionCodigo
         {
             get;
             set;
         }
 
-        public char RunDigito
+        public Int32 GradoCodigo
         {
             get;
             set;
         }
 
-        public string Run
+        public Guid CursoId
+        {
+            get;
+            set;
+        }
+
+        public Guid LibroClaseId
+        {
+            get;
+            set;
+        }
+
+        public Guid AlumnoId
+        {
+            get;
+            set;
+        }
+
+        public DateTime Fecha
+        {
+            get;
+            set;
+        }
+        
+        public DateTime FechaHora
         {
             get;
             set;
         }
 
         public System.Data.Linq.Binary Huella
-        {
-            get;
-            set;
-        }
-
-        public System.Data.Linq.Binary ImagenHuella
-        {
-            get;
-            set;
-        }
-
-        public bool Enrolado
         {
             get;
             set;

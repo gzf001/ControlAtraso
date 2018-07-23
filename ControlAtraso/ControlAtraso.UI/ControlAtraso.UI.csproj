@@ -63,6 +63,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -179,7 +180,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\huella.jpg" />
-    <Resource Include="Assets\huella.png" />
     <Resource Include="Assets\manosPizarra.jpg" />
     <Resource Include="Assets\NetCore.ico" />
     <Resource Include="Assets\NetCore.png" />
@@ -187,8 +187,9 @@
   <ItemGroup>
     <Resource Include="Assets\Forward.png" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Assets\Huellas\" />
+    <Resource Include="Assets\check.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

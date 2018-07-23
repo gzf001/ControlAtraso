@@ -9,40 +9,39 @@
       Loaded="Page_Loaded">
 
     <Grid>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="2*"/>
-            </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
 
-            <Label Name="Now" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" FontFamily="Verdana" FontSize="16" Foreground="#425567"/>
-            
-            <Button CommandParameter="enrolamiento" Style="{StaticResource MouseOverButtonStyle}" Grid.Row="1" Grid.Column="0" Margin="0,40,0,0" Click="Button_Click" HorizontalAlignment="Center">
-                <Button.Content>
-                    <Ellipse Height="300" Width="300" VerticalAlignment="Center" HorizontalAlignment="Left" Stroke="#FF425567" StrokeThickness="2">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="/Assets/manosPizarra.jpg" Stretch="UniformToFill"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
-                </Button.Content>
-            </Button>
-            <Button CommandParameter="control" Style="{StaticResource MouseOverButtonStyle}" Grid.Row="1" Grid.Column="1" Margin="0,40,0,0" Click="Button_Click" HorizontalAlignment="Center">
-                <Button.Content>
-                    <Ellipse Height="300" Width="300" VerticalAlignment="Center" HorizontalAlignment="Center" Stroke="#FF425567" StrokeThickness="2">
-                        <Ellipse.Fill>
-                            <ImageBrush  ImageSource="/Assets/huella.jpg" Stretch="UniformToFill"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
-                </Button.Content>
-            </Button>
+        <Label Name="Now" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" FontFamily="Verdana" FontSize="16" Foreground="#425567"/>
 
-            <StackPanel Grid.Row="2" Grid.Column="0">
-                <TextBlock Margin="0,20,0,0" Width="360" TextTrimming="None" TextAlignment="Justify" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" Foreground="#425567">
+        <Button CommandParameter="enrolamiento" Style="{StaticResource MouseOverButtonStyle}" Grid.Row="1" Grid.Column="0" Margin="0,40,0,0" Click="Button_Click" HorizontalAlignment="Center">
+            <Button.Content>
+                <Ellipse Height="300" Width="300" VerticalAlignment="Center" HorizontalAlignment="Left" Stroke="#FF425567" StrokeThickness="2">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="/Assets/manosPizarra.jpg" Stretch="UniformToFill"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+            </Button.Content>
+        </Button>
+        <Button CommandParameter="control" Style="{StaticResource MouseOverButtonStyle}" Grid.Row="1" Grid.Column="1" Margin="0,40,0,0" Click="Button_Click" HorizontalAlignment="Center">
+            <Button.Content>
+                <Ellipse Height="300" Width="300" VerticalAlignment="Center" HorizontalAlignment="Center" Stroke="#FF425567" StrokeThickness="2">
+                    <Ellipse.Fill>
+                        <ImageBrush  ImageSource="/Assets/huella.jpg" Stretch="UniformToFill"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+            </Button.Content>
+        </Button>
+
+        <StackPanel Grid.Row="2" Grid.Column="0">
+            <TextBlock Margin="0,20,0,0" Width="360" TextTrimming="None" TextAlignment="Justify" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" Foreground="#425567">
                                 Esta opción permite enrolar a los estudiantes en el sistema.
                     <LineBreak/><LineBreak/>
                                 Es muy simple, sólo tiene que seguir 2 pasos:
@@ -50,15 +49,14 @@
                                 1.- Buscar al estudiante
                     <LineBreak/><LineBreak/>
                                 2.- Registrar la huella digital
-                </TextBlock>
-            </StackPanel>
-            <StackPanel Grid.Row="2" Grid.Column="1">
-                <TextBlock Margin="30,20,0,0" Width="360" TextTrimming="None" TextAlignment="Justify" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" Foreground="#425567">
+            </TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="1">
+            <TextBlock Margin="30,20,0,0" Width="360" TextTrimming="None" TextAlignment="Justify" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" Foreground="#425567">
                                 Esta opción permite registrar el atraso.
                 <LineBreak/><LineBreak/>
                                 El alumno debe posicionar su dedo índice en el huellero.
-                </TextBlock>
-            </StackPanel>
-        </Grid>
+            </TextBlock>
+        </StackPanel>
     </Grid>
 </Page>

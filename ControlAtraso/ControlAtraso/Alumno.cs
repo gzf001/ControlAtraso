@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DPFP;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,6 +13,144 @@ namespace ControlAtraso
 {
     public class Alumno
     {
+        public static string Enrolar(ControlAtraso.Entity.Persona persona)
+        {
+            string output = string.Empty;
+
+            Random random = new Random();
+
+            int indice = random.Next(0, 4);
+
+            string[] claves = System.Configuration.ConfigurationManager.AppSettings["PalabrasClave"].Split(',');
+
+            string token = claves[indice];
+
+            byte[] encryted = System.Text.Encoding.Unicode.GetBytes(token);
+
+            token = Convert.ToBase64String(encryted);
+
+            string url = System.Configuration.ConfigurationManager.AppSettings["targetUrl"];
+
+            url = string.Format("{0}/Enrolar", url);
+
+            try
+            {
+                output = JsonConvert.SerializeObject(persona, Formatting.Indented);
+
+                byte[] data = UTF8Encoding.UTF8.GetBytes(output);
+
+                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+
+                request.Timeout = 10 * 1000;
+                request.Method = "POST";
+                request.ContentLength = data.Length;
+                request.ContentType = "application/json; charset=utf-8";
+
+                request.Headers.Add("token", token);
+
+                Stream postStream = request.GetRequestStream();
+
+                postStream.Write(data, 0, data.Length);
+
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+
+                string resp = reader.ReadToEnd();
+
+                // Cerramos los streams
+                reader.Close();
+
+                postStream.Close();
+
+                response.Close();
+
+                return "Ok";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public static ControlAtraso.Entity.Alumno Registrar(Sample sample)
+        {
+            string output = string.Empty;
+
+            Random random = new Random();
+
+            int indice = random.Next(0, 4);
+
+            string[] claves = System.Configuration.ConfigurationManager.AppSettings["PalabrasClave"].Split(',');
+
+            string token = claves[indice];
+
+            byte[] encryted = System.Text.Encoding.Unicode.GetBytes(token);
+
+            token = Convert.ToBase64String(encryted);
+
+            string url = System.Configuration.ConfigurationManager.AppSettings["targetUrl"];
+
+            url = string.Format("{0}/Registrar", url);
+
+            string rbdCuerpo = System.Configuration.ConfigurationManager.AppSettings["rbd"];
+
+            System.Data.Linq.Binary binary = new System.Data.Linq.Binary(sample.Bytes);
+
+            ControlAtraso.Entity.RegistroAtraso registroAtraso = new ControlAtraso.Entity.RegistroAtraso
+            {
+                RbdCuerpo = int.Parse(rbdCuerpo.Substring(0, rbdCuerpo.Length - 1)),
+                RbdDigito = int.Parse(rbdCuerpo.Substring(rbdCuerpo.Length - 1, 1)),
+                SostenedorId = default(Guid),
+                EstablecimientoId = default(Guid),
+                AnoNumero = DateTime.Today.Year,
+                TipoEducacionCodigo = default(int),
+                GradoCodigo = default(int),
+                CursoId = default(Guid),
+                LibroClaseId = default(Guid),
+                AlumnoId = default(Guid),
+                Fecha = DateTime.Today,
+                FechaHora = DateTime.Now,
+                Huella = binary
+            };
+
+            output = JsonConvert.SerializeObject(registroAtraso, Formatting.Indented);
+
+            byte[] data = UTF8Encoding.UTF8.GetBytes(output);
+
+            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+
+            request.Timeout = 10 * 1000;
+            request.Method = "POST";
+            request.ContentLength = data.Length;
+            request.ContentType = "application/json; charset=utf-8";
+
+            request.Headers.Add("token", token);
+
+            Stream postStream = request.GetRequestStream();
+
+            postStream.Write(data, 0, data.Length);
+
+            HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+
+            StreamReader reader = new StreamReader(response.GetResponseStream());
+
+            string resp = reader.ReadToEnd();
+
+            // Cerramos los streams
+            reader.Close();
+
+            postStream.Close();
+
+            response.Close();
+
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+
+            ControlAtraso.Entity.Alumno alumno = javaScriptSerializer.Deserialize<ControlAtraso.Entity.Alumno>(resp);
+
+            return alumno;
+        }
+
         public static List<ControlAtraso.Entity.Alumno> GetAll(ControlAtraso.Entity.Curso curso)
         {
             Random random = new Random();
