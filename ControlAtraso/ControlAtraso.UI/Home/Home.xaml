@@ -21,7 +21,7 @@
 
         <Label Name="Now" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" FontFamily="Verdana" FontSize="16" Foreground="#425567"/>
 
-        <Button CommandParameter="enrolamiento" Style="{StaticResource MouseOverButtonStyle}" Grid.Row="1" Grid.Column="0" Margin="0,40,0,0" Click="Button_Click" HorizontalAlignment="Center">
+        <Button CommandParameter="enrolamiento" Style="{StaticResource MouseOverButtonStyle}" Grid.Row="1" Grid.Column="0" Margin="0,35,0,0" Click="Button_Click" HorizontalAlignment="Center">
             <Button.Content>
                 <Ellipse Height="300" Width="300" VerticalAlignment="Center" HorizontalAlignment="Left" Stroke="#FF425567" StrokeThickness="2">
                     <Ellipse.Fill>
@@ -30,7 +30,7 @@
                 </Ellipse>
             </Button.Content>
         </Button>
-        <Button CommandParameter="control" Style="{StaticResource MouseOverButtonStyle}" Grid.Row="1" Grid.Column="1" Margin="0,40,0,0" Click="Button_Click" HorizontalAlignment="Center">
+        <Button CommandParameter="control" Style="{StaticResource MouseOverButtonStyle}" Grid.Row="1" Grid.Column="1" Margin="0,35,0,0" Click="Button_Click" HorizontalAlignment="Center">
             <Button.Content>
                 <Ellipse Height="300" Width="300" VerticalAlignment="Center" HorizontalAlignment="Center" Stroke="#FF425567" StrokeThickness="2">
                     <Ellipse.Fill>

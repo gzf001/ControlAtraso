@@ -53,5 +53,12 @@ namespace ControlAtraso.UI.Enrolamiento
 
             NavigationService.Navigate(enrolamiento);
         }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            ControlAtraso.UI.Home.Home home = new ControlAtraso.UI.Home.Home();
+
+            NavigationService.Navigate(home);
+        }
     }
 }

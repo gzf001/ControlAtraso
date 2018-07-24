@@ -2,6 +2,7 @@
 using DPFP.Capture;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,9 +23,7 @@ namespace ControlAtraso.UI.Registro
     /// </summary>
     public partial class Registro : Page, DPFP.Capture.EventHandler
     {
-        private DPFP.Capture.Capture capturer;
-
-        delegate void DelegadoEstado(ControlAtraso.Entity.Alumno alumno);
+        delegate void DelegadoEstado(ControlAtraso.Entity.Alumno alumno, Bitmap src);
 
         public Registro()
         {
@@ -44,18 +43,18 @@ namespace ControlAtraso.UI.Registro
                 if ((DateTime.Now.Second % 5) == 0)
                 {
                     this.Message.Content = string.Empty;
+
+                    this.HuellaPicture.Source = null;
                 }
             };
 
             dispathcer.Start();
 
-            capturer = new DPFP.Capture.Capture();
-
-            if (capturer != null)
+            if (ControlAtraso.UI.MainWindow.Capturer != null)
             {
-                capturer.EventHandler = this;
+                ControlAtraso.UI.MainWindow.Capturer.EventHandler = this;
 
-                capturer.StartCapture();
+                ControlAtraso.UI.MainWindow.Capturer.StartCapture();
             }
         }
 
@@ -63,9 +62,15 @@ namespace ControlAtraso.UI.Registro
         {
             DelegadoEstado delegado = new DelegadoEstado(this.Estado);
 
+            DPFP.Capture.SampleConversion convertor = new DPFP.Capture.SampleConversion();
+
+            Bitmap bitmap = null;
+
+            convertor.ConvertToPicture(sample, ref bitmap);
+
             ControlAtraso.Entity.Alumno alumno = ControlAtraso.Alumno.Registrar(sample);
 
-            this.Dispatcher.Invoke(delegado, alumno);
+            this.Dispatcher.Invoke(delegado, alumno, bitmap);
         }
 
         protected DPFP.FeatureSet ExtractFeatures(DPFP.Sample sample, DPFP.Processing.DataPurpose purpose)
@@ -88,29 +93,51 @@ namespace ControlAtraso.UI.Registro
             }
         }
 
-        void DPFP.Capture.EventHandler.OnFingerGone(object Capture, string readerSerialNumber)
+        void DPFP.Capture.EventHandler.OnFingerGone(object capture, string readerSerialNumber)
         {
         }
 
-        void DPFP.Capture.EventHandler.OnFingerTouch(object Capture, string readerSerialNumber)
+        void DPFP.Capture.EventHandler.OnFingerTouch(object capture, string readerSerialNumber)
         {
         }
 
-        void DPFP.Capture.EventHandler.OnReaderConnect(object Capture, string readerSerialNumber)
+        void DPFP.Capture.EventHandler.OnReaderConnect(object capture, string readerSerialNumber)
+        {
+            ControlAtraso.UI.MainWindow.Main.OnReaderConnect(capture, readerSerialNumber);
+        }
+
+        void DPFP.Capture.EventHandler.OnReaderDisconnect(object capture, string readerSerialNumber)
+        {
+            ControlAtraso.UI.MainWindow.Main.OnReaderDisconnect(capture, readerSerialNumber);
+        }
+
+        void DPFP.Capture.EventHandler.OnSampleQuality(object capture, string readerSerialNumber, CaptureFeedback captureFeedback)
         {
         }
 
-        void DPFP.Capture.EventHandler.OnReaderDisconnect(object Capture, string readerSerialNumber)
+        private void Estado(ControlAtraso.Entity.Alumno alumno, Bitmap src)
         {
-            MessageBox.Show("El lector se encuentra desconectado", "Insignia", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
-        }
+            System.IO.MemoryStream ms = null;
 
-        void DPFP.Capture.EventHandler.OnSampleQuality(object Capture, string readerSerialNumber, CaptureFeedback captureFeedback)
-        {
-        }
+            if (src != null)
+            {
+                ms = new System.IO.MemoryStream();
 
-        private void Estado(ControlAtraso.Entity.Alumno alumno)
-        {
+                src.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+
+                BitmapImage image = new BitmapImage();
+
+                image.BeginInit();
+
+                ms.Seek(0, System.IO.SeekOrigin.Begin);
+
+                image.StreamSource = ms;
+
+                image.EndInit();
+
+                HuellaPicture.Source = image;
+            }
+
             if (alumno.Estado.Equals("Válido"))
             {
                 this.Message.Content = string.Format("{0}\n{1}", alumno.Persona.Nombre, alumno.Matricula.Curso);
@@ -119,6 +146,18 @@ namespace ControlAtraso.UI.Registro
             {
                 this.Message.Content = "Se ha generado un error con el registro del atraso, por favor contacte a soporte NetCore";
             }
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            if (ControlAtraso.UI.MainWindow.Capturer != null)
+            {
+                ControlAtraso.UI.MainWindow.Capturer.EventHandler = ControlAtraso.UI.MainWindow.Main;
+            }
+
+            ControlAtraso.UI.Home.Home home = new ControlAtraso.UI.Home.Home();
+
+            NavigationService.Navigate(home);
         }
     }
 }

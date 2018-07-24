@@ -29,6 +29,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -57,8 +58,8 @@
 
                 <Button Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,40,0,0" Width="100" Height="30" VerticalContentAlignment="Center" Command="{Binding SeekCommand}">
                     <DockPanel>
-                        <Image Source="/Assets/NetCore.ico" Margin="0,0,10,0"/>
-                        <TextBlock Margin="0,4,0,0">
+                        <Image Source="/Assets/search.png" Margin="0,0,10,0"/>
+                        <TextBlock Margin="0,4,10,0">
                             Buscar
                         </TextBlock>
                     </DockPanel>
@@ -91,7 +92,7 @@
             </Grid>
         </GroupBox>
 
-        <DataGrid Name="DataGrid" ItemsSource="{Binding Alumnos}" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="10,20,10,10" VerticalAlignment="Top" AlternatingRowBackground="LightBlue" AlternationCount="1" AutoGenerateColumns="False" Height="264" Width="698" FontFamily="Verdana" FontSize="12" IsReadOnly="True" MouseDoubleClick="DataGrid_MouseDoubleClick">
+        <DataGrid Name="DataGrid" ItemsSource="{Binding Alumnos}" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="10,20,10,10" VerticalAlignment="Top" AlternatingRowBackground="LightBlue" AlternationCount="1" AutoGenerateColumns="False" Height="244" Width="698" FontFamily="Verdana" FontSize="12" IsReadOnly="True" MouseDoubleClick="DataGrid_MouseDoubleClick">
             <DataGrid.Effect>
                 <DropShadowEffect/>
             </DataGrid.Effect>
@@ -101,6 +102,15 @@
                 <DataGridTextColumn Header="Curso" Binding="{Binding Matricula.Curso}" Width="205"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        <Button Name="Back" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,20,0" Width="100" Height="30" VerticalContentAlignment="Center" Click="Back_Click">
+            <DockPanel>
+                <Image Source="/Assets/back.png" Margin="0,0,10,0"/>
+                <TextBlock Margin="0,4,10,0">
+                            Volver
+                </TextBlock>
+            </DockPanel>
+        </Button>
 
     </Grid>
 

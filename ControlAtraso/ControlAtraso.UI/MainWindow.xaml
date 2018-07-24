@@ -4,12 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Inicio" Height="680" Width="800" WindowStartupLocation="CenterScreen" Cursor="Arrow" ResizeMode="CanMinimize" Icon="Assets/NetCore.ico">
+        Title="Inicio"
+        Height="680"
+        Width="800"
+        WindowStartupLocation="CenterScreen"
+        Cursor="Arrow"
+        ResizeMode="CanMinimize"
+        Icon="Assets/NetCore.ico"
+        Loaded="Window_Loaded"
+        Closed="Window_Closed">
     
     <Grid Background="#FFE5E5E5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -31,6 +40,13 @@
 
             </Grid>
         </StackPanel>
+        <StatusBar Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="40" Width="200" Margin="10,-45,0,0" VerticalAlignment="Top" Background="#FFE5E5E5">
+            <Ellipse Name="Status" Height="20" Width="20" VerticalAlignment="Center" HorizontalAlignment="Left" Stroke="Black" StrokeThickness="1">
+                <Ellipse.Fill>
+                    <SolidColorBrush Color="Green"/>
+                </Ellipse.Fill>
+            </Ellipse>
+            <TextBlock Name="StatusText" FontFamily="Verdana" FontSize="10">Lector conectado</TextBlock>
+        </StatusBar>
     </Grid>
-    
 </Window>

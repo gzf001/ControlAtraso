@@ -23,8 +23,6 @@ namespace ControlAtraso.UI.Enrolamiento
     /// </summary>
     public partial class Enrolamiento : Page, DPFP.Capture.EventHandler
     {
-        private DPFP.Capture.Capture capturer;
-
         private DPFP.Processing.Enrollment enroller;
 
         private static ControlAtraso.Entity.Alumno Alumno
@@ -54,13 +52,11 @@ namespace ControlAtraso.UI.Enrolamiento
                 this.HuellaPicture.Source = new BitmapImage(new Uri("/Assets/check.png", UriKind.Relative));
             }
 
-            capturer = new DPFP.Capture.Capture();
-
-            if (capturer != null)
+            if (ControlAtraso.UI.MainWindow.Capturer != null)
             {
-                capturer.EventHandler = this;
+                ControlAtraso.UI.MainWindow.Capturer.EventHandler = this;
 
-                capturer.StartCapture();
+                ControlAtraso.UI.MainWindow.Capturer.StartCapture();
 
                 enroller = new DPFP.Processing.Enrollment();
             }
@@ -122,22 +118,23 @@ namespace ControlAtraso.UI.Enrolamiento
             }
         }
 
-        void DPFP.Capture.EventHandler.OnFingerGone(object Capture, string readerSerialNumber)
+        void DPFP.Capture.EventHandler.OnFingerGone(object capture, string readerSerialNumber)
         {
         }
 
-        void DPFP.Capture.EventHandler.OnFingerTouch(object Capture, string readerSerialNumber)
+        void DPFP.Capture.EventHandler.OnFingerTouch(object capture, string readerSerialNumber)
         {
             this.Dispatcher.Invoke(new DelegadoEstado(this.Estado), string.Empty, string.Empty, null);
         }
 
-        void DPFP.Capture.EventHandler.OnReaderConnect(object Capture, string readerSerialNumber)
+        void DPFP.Capture.EventHandler.OnReaderConnect(object capture, string readerSerialNumber)
         {
+            ControlAtraso.UI.MainWindow.Main.OnReaderConnect(capture, readerSerialNumber);
         }
 
-        void DPFP.Capture.EventHandler.OnReaderDisconnect(object Capture, string readerSerialNumber)
+        void DPFP.Capture.EventHandler.OnReaderDisconnect(object capture, string readerSerialNumber)
         {
-            MessageBox.Show("El lector se encuentra desconectado", "Insignia", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
+            ControlAtraso.UI.MainWindow.Main.OnReaderDisconnect(capture, readerSerialNumber);
         }
 
         void DPFP.Capture.EventHandler.OnSampleQuality(object Capture, string readerSerialNumber, CaptureFeedback captureFeedback)
@@ -198,14 +195,9 @@ namespace ControlAtraso.UI.Enrolamiento
 
                         ControlAtraso.Alumno.Enrolar(persona);
 
-                        if (capturer != null)
-                        {
-                            capturer.StopCapture();
-                        }
-
                         MessageBox.Show("El alumno fue enrolado", "Insignia", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
 
-                        NavigationService.Navigate(new ControlAtraso.UI.Enrolamiento.HomeEnrolamiento());
+                       this.Back_Click(null, null);
 
                         break;
                     }
@@ -214,11 +206,11 @@ namespace ControlAtraso.UI.Enrolamiento
             this.Message.Content = message;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Back_Click(object sender, RoutedEventArgs e)
         {
-            if (capturer != null)
+            if (ControlAtraso.UI.MainWindow.Capturer != null)
             {
-                capturer.StopCapture();
+                ControlAtraso.UI.MainWindow.Capturer.EventHandler = ControlAtraso.UI.MainWindow.Main;
             }
 
             NavigationService.Navigate(new ControlAtraso.UI.Enrolamiento.HomeEnrolamiento());

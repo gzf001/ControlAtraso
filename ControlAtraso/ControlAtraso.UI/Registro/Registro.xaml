@@ -14,18 +14,27 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <Label Name="Now" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" FontFamily="Verdana" FontSize="30" Foreground="#425567"/>
 
-        <Border Grid.Row="1" Grid.Column="0" Width="330" Height="362" Margin="0,20,-150,0" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1" BorderBrush="Black">
+        <Border Grid.Row="1" Grid.Column="0" Width="330" Height="342" Margin="0,30,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1" BorderBrush="Black">
             <Image Name="HuellaPicture" Margin="0,0,1,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Border>
 
-        <Label Name="Message" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Margin="5,20,0,0" VerticalAlignment="Top" FontFamily="Verdana" FontSize="24" Foreground="#425567"/>
+        <Label Name="Message" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" FontFamily="Verdana" FontSize="24" Foreground="#425567"/>
 
+        <Button Name="Back" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Margin="0,-5,50,0" Width="100" Height="30" VerticalContentAlignment="Center" Click="Back_Click">
+            <DockPanel>
+                <Image Source="/Assets/back.png" Margin="0,0,10,0"/>
+                <TextBlock Margin="0,4,10,0">
+                            Volver
+                </TextBlock>
+            </DockPanel>
+        </Button>
     </Grid>
 </Page>
