@@ -49,9 +49,12 @@ namespace ControlAtraso.UI.Enrolamiento
 
         private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ControlAtraso.UI.Enrolamiento.Enrolamiento enrolamiento = new ControlAtraso.UI.Enrolamiento.Enrolamiento(this.DataGrid.SelectedItems[0] as ControlAtraso.Entity.Alumno);
+            if (this.DataGrid.Items.Count > 0)
+            {
+                ControlAtraso.UI.Enrolamiento.Enrolamiento enrolamiento = new ControlAtraso.UI.Enrolamiento.Enrolamiento(this.DataGrid.SelectedItems[0] as ControlAtraso.Entity.Alumno);
 
-            NavigationService.Navigate(enrolamiento);
+                NavigationService.Navigate(enrolamiento);
+            }
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)

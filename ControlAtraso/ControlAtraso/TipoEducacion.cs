@@ -25,9 +25,11 @@ namespace ControlAtraso
 
             token = Convert.ToBase64String(encryted);
 
-            string url = System.Configuration.ConfigurationManager.AppSettings["targetUrl"];
+            System.Configuration.Configuration configuration = System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Environment.GetCommandLineArgs()[0]);
 
-            string rbdCuerpo = System.Configuration.ConfigurationManager.AppSettings["rbd"];
+            string url = configuration.AppSettings.Settings["targetUrl"].Value;
+
+            string rbdCuerpo = configuration.AppSettings.Settings["rbd"].Value; ;
 
             url = string.Format("{0}/TiposEducacion?anioNumero={1}&rbdCuerpo={2}&rbdDigito={3}", url, DateTime.Today.Year, rbdCuerpo.Substring(0, rbdCuerpo.Length - 1), rbdCuerpo.Substring(rbdCuerpo.Length - 1, 1));
 

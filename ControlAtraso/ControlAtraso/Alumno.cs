@@ -153,6 +153,11 @@ namespace ControlAtraso
 
         public static List<ControlAtraso.Entity.Alumno> GetAll(ControlAtraso.Entity.Curso curso)
         {
+            if (curso == null || curso.Id.Equals(default(Guid)))
+            {
+                return null;
+            }
+
             Random random = new Random();
 
             int indice = random.Next(0, 4);
@@ -165,9 +170,11 @@ namespace ControlAtraso
 
             token = Convert.ToBase64String(encryted);
 
-            string url = System.Configuration.ConfigurationManager.AppSettings["targetUrl"];
+            System.Configuration.Configuration configuration = System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Environment.GetCommandLineArgs()[0]);
 
-            string rbdCuerpo = System.Configuration.ConfigurationManager.AppSettings["rbd"];
+            string url = configuration.AppSettings.Settings["targetUrl"].Value;
+
+            string rbdCuerpo = configuration.AppSettings.Settings["rbd"].Value; ;
 
             url = string.Format("{0}/Alumnos?anioNumero={1}&rbdCuerpo={2}&rbdDigito={3}&cursoId={4}", url, DateTime.Today.Year, rbdCuerpo.Substring(0, rbdCuerpo.Length - 1), rbdCuerpo.Substring(rbdCuerpo.Length - 1, 1), (curso == null ? default(Guid) : curso.Id));
 
