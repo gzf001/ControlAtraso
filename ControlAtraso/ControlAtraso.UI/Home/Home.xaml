@@ -19,7 +19,7 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Name="Now" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" FontFamily="Verdana" FontSize="16" Foreground="#425567"/>
+        <Label Name="Establecimiento" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" FontFamily="Verdana" FontSize="16" Foreground="#425567"/>
 
         <Button CommandParameter="enrolamiento" Style="{StaticResource MouseOverButtonStyle}" Grid.Row="1" Grid.Column="0" Margin="0,35,0,0" Click="Button_Click" HorizontalAlignment="Center">
             <Button.Content>

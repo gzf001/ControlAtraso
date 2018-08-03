@@ -89,11 +89,13 @@ namespace ControlAtraso
 
             token = Convert.ToBase64String(encryted);
 
-            string url = System.Configuration.ConfigurationManager.AppSettings["targetUrl"];
+            System.Configuration.Configuration configuration = System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Environment.GetCommandLineArgs()[0]);
+
+            string url = configuration.AppSettings.Settings["targetUrl"].Value;
 
             url = string.Format("{0}/Registrar", url);
 
-            string rbdCuerpo = System.Configuration.ConfigurationManager.AppSettings["rbd"];
+            string rbdCuerpo = configuration.AppSettings.Settings["rbd"].Value;
 
             System.Data.Linq.Binary binary = new System.Data.Linq.Binary(sample.Bytes);
 

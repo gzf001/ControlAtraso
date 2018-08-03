@@ -92,7 +92,7 @@
             </Grid>
         </GroupBox>
 
-        <DataGrid Name="DataGrid" ItemsSource="{Binding Alumnos}" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="10,20,10,10" VerticalAlignment="Top" AlternatingRowBackground="LightBlue" AlternationCount="1" AutoGenerateColumns="False" Height="244" Width="698" FontFamily="Verdana" FontSize="12" IsReadOnly="True" MouseDoubleClick="DataGrid_MouseDoubleClick">
+        <DataGrid Name="DataGrid" ItemsSource="{Binding Alumnos}" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="10,20,10,10" VerticalAlignment="Top" AlternatingRowBackground="LightBlue" AlternationCount="1" AutoGenerateColumns="False" Height="214" Width="698" FontFamily="Verdana" FontSize="12" IsReadOnly="True" MouseDoubleClick="DataGrid_MouseDoubleClick">
             <DataGrid.Effect>
                 <DropShadowEffect/>
             </DataGrid.Effect>

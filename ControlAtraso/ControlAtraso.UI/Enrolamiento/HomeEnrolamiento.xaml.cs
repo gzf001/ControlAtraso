@@ -51,6 +51,8 @@ namespace ControlAtraso.UI.Enrolamiento
         {
             if (this.DataGrid.Items.Count > 0)
             {
+                ControlAtraso.UI.Enrolamiento.Enrolamiento.HomeEnrolamiento = this;
+
                 ControlAtraso.UI.Enrolamiento.Enrolamiento enrolamiento = new ControlAtraso.UI.Enrolamiento.Enrolamiento(this.DataGrid.SelectedItems[0] as ControlAtraso.Entity.Alumno);
 
                 NavigationService.Navigate(enrolamiento);

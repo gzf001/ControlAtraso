@@ -7,10 +7,10 @@ using System.Windows;
 // La información general de un ensamblado se controla mediante el siguiente 
 // conjunto de atributos. Cambie estos valores de atributo para modificar la información
 // asociada con un ensamblado.
-[assembly: AssemblyTitle("ControlAtraso.UI")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("NetCore Insignia Control de Atrasos")]
+[assembly: AssemblyDescription("Permite controlar los atrasos que tengan los alumnos mediante la huella digital")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Inversiones Castellano Limitada")]
 [assembly: AssemblyProduct("ControlAtraso.UI")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
@@ -53,3 +53,5 @@ using System.Windows;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: NeutralResourcesLanguage("es-CL")]
+

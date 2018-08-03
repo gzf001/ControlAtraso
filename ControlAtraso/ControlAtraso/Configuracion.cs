@@ -64,6 +64,7 @@ namespace ControlAtraso
 
             if (establecimiento.Estado.Equals("Válido"))
             {
+                configuration.AppSettings.Settings.Add("establecimiento", establecimiento.Nombre);
                 configuration.AppSettings.Settings.Add("rbd", string.Format("{0}{1}", rbdCuerpo, rbdDigito));
                 configuration.AppSettings.Settings.Add("targetUrl", establecimiento.Url);
 

@@ -23,6 +23,12 @@ namespace ControlAtraso.UI.Enrolamiento
     /// </summary>
     public partial class Enrolamiento : Page, DPFP.Capture.EventHandler
     {
+        public static ControlAtraso.UI.Enrolamiento.HomeEnrolamiento HomeEnrolamiento
+        {
+            get;
+            set;
+        }
+
         private DPFP.Processing.Enrollment enroller;
 
         private static ControlAtraso.Entity.Alumno Alumno
@@ -197,7 +203,7 @@ namespace ControlAtraso.UI.Enrolamiento
 
                         MessageBox.Show("El alumno fue enrolado", "Insignia", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
 
-                       this.Back_Click(null, null);
+                        this.Back_Click(null, null);
 
                         break;
                     }
@@ -213,7 +219,9 @@ namespace ControlAtraso.UI.Enrolamiento
                 ControlAtraso.UI.MainWindow.Capturer.EventHandler = ControlAtraso.UI.MainWindow.Main;
             }
 
-            NavigationService.Navigate(new ControlAtraso.UI.Enrolamiento.HomeEnrolamiento());
+            NavigationService.Navigate(ControlAtraso.UI.Enrolamiento.Enrolamiento.HomeEnrolamiento);
+
+            //NavigationService.Navigate(new ControlAtraso.UI.Enrolamiento.HomeEnrolamiento());
         }
     }
 }

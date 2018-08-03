@@ -47,13 +47,33 @@ namespace ControlAtraso.UI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Capturer = new DPFP.Capture.Capture();
-
-            if (Capturer != null)
+            try
             {
-                Capturer.EventHandler = this;
+                System.Windows.Threading.DispatcherTimer dispathcer = new System.Windows.Threading.DispatcherTimer();
 
-                Capturer.StartCapture();
+                dispathcer.Interval = new TimeSpan(0, 0, 1);
+
+                dispathcer.Tick += (x, y) =>
+                {
+                    this.Now.Text = string.Format("{0} {1}", DateTime.Today.ToString("D", new System.Globalization.CultureInfo("es-ES")), DateTime.Now.ToLongTimeString());
+                };
+
+                dispathcer.Start();
+
+                Capturer = new DPFP.Capture.Capture();
+
+                if (Capturer != null)
+                {
+                    Capturer.EventHandler = this;
+
+                    Capturer.StartCapture();
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Primero instale el driver del lector de huella", "Insignia", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+
+                this.Close();
             }
         }
 

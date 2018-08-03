@@ -27,16 +27,11 @@ namespace ControlAtraso.UI.Home
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            System.Windows.Threading.DispatcherTimer dispathcer = new System.Windows.Threading.DispatcherTimer();
+            System.Configuration.Configuration configuration = System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Environment.GetCommandLineArgs()[0]);
 
-            dispathcer.Interval = new TimeSpan(0, 0, 1);
+            string establecimiento = configuration.AppSettings.Settings["establecimiento"].Value;
 
-            dispathcer.Tick += (x, y) =>
-            {
-                this.Now.Content = string.Format("{0} {1}", DateTime.Today.ToString("D", new System.Globalization.CultureInfo("es-ES")), DateTime.Now.ToLongTimeString());
-            };
-
-            dispathcer.Start();
+            this.Establecimiento.Content = establecimiento;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

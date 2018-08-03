@@ -13,7 +13,7 @@
         Icon="Assets/NetCore.ico"
         Loaded="Window_Loaded"
         Closed="Window_Closed">
-    
+
     <Grid Background="#FFE5E5E5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -40,13 +40,14 @@
 
             </Grid>
         </StackPanel>
-        <StatusBar Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="40" Width="200" Margin="10,-45,0,0" VerticalAlignment="Top" Background="#FFE5E5E5">
+        <StatusBar Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="40" Width="770" Margin="10,-45,0,0" VerticalAlignment="Top" Background="#FFE5E5E5">
             <Ellipse Name="Status" Height="20" Width="20" VerticalAlignment="Center" HorizontalAlignment="Left" Stroke="Black" StrokeThickness="1">
                 <Ellipse.Fill>
                     <SolidColorBrush Color="Green"/>
                 </Ellipse.Fill>
             </Ellipse>
-            <TextBlock Name="StatusText" FontFamily="Verdana" FontSize="10">Lector conectado</TextBlock>
+            <TextBlock Name="StatusText" Margin="0,0,0,0" FontFamily="Verdana" FontSize="10">Lector conectado</TextBlock>
+            <TextBlock Name="Now" Margin="375,0,0,0" VerticalAlignment="Top" FontFamily="Verdana" FontWeight="Black" FontSize="12" Foreground="#425567"/>
         </StatusBar>
     </Grid>
 </Window>
