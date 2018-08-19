@@ -47,7 +47,7 @@
                 </Ellipse.Fill>
             </Ellipse>
             <TextBlock Name="StatusText" Margin="0,0,0,0" FontFamily="Verdana" FontSize="10">Lector conectado</TextBlock>
-            <TextBlock Name="Now" Margin="375,0,0,0" VerticalAlignment="Top" FontFamily="Verdana" FontWeight="Black" FontSize="12" Foreground="#425567"/>
+            <TextBlock Name="Now" Margin="340,0,0,0" VerticalAlignment="Top" FontFamily="Verdana" FontWeight="Black" FontSize="12" Foreground="#425567"/>
         </StatusBar>
     </Grid>
 </Window>

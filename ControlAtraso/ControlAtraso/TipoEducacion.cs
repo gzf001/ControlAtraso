@@ -11,52 +11,17 @@ namespace ControlAtraso
 {
     public class TipoEducacion
     {
-        public static List<ControlAtraso.Entity.TipoEducacion> GetAll()
+        public static Result<List<ControlAtraso.Entity.TipoEducacion>> GetAll()
         {
-            Random random = new Random();
+            ControlAtraso.Parameters parameters = new ControlAtraso.Parameters();
 
-            int indice = random.Next(0, 4);
+            string url = string.Format("{0}/TiposEducacion?anioNumero={1}&rbdCuerpo={2}&rbdDigito={3}", parameters.Url, DateTime.Today.Year, parameters.Rbd.Substring(0, parameters.Rbd.Length - 1), parameters.Rbd.Substring(parameters.Rbd.Length - 1, 1));
 
-            string[] claves = System.Configuration.ConfigurationManager.AppSettings["PalabrasClave"].Split(',');
+            ControlAtraso.Helper h = new Helper();
 
-            string token = claves[indice];
+            ControlAtraso.Result<List<ControlAtraso.Entity.TipoEducacion>> result = h.Call<List<ControlAtraso.Entity.TipoEducacion>>(CallType.CallTypeGet, url);
 
-            byte[] encryted = System.Text.Encoding.Unicode.GetBytes(token);
-
-            token = Convert.ToBase64String(encryted);
-
-            System.Configuration.Configuration configuration = System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Environment.GetCommandLineArgs()[0]);
-
-            string url = configuration.AppSettings.Settings["targetUrl"].Value;
-
-            string rbdCuerpo = configuration.AppSettings.Settings["rbd"].Value; ;
-
-            url = string.Format("{0}/TiposEducacion?anioNumero={1}&rbdCuerpo={2}&rbdDigito={3}", url, DateTime.Today.Year, rbdCuerpo.Substring(0, rbdCuerpo.Length - 1), rbdCuerpo.Substring(rbdCuerpo.Length - 1, 1));
-
-            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
-
-            request.Timeout = 10 * 1000;
-            request.Method = "GET";
-            request.ContentType = "application/json; charset=utf-8";
-
-            request.Headers.Add("token", token);
-
-            HttpWebResponse response = request.GetResponse() as HttpWebResponse;
-
-            StreamReader reader = new StreamReader(response.GetResponseStream());
-
-            string resp = reader.ReadToEnd();
-
-            // Cerramos los streams
-            reader.Close();
-
-            response.Close();
-
-            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-
-            List<ControlAtraso.Entity.TipoEducacion> tiposEducacion = javaScriptSerializer.Deserialize<List<ControlAtraso.Entity.TipoEducacion>>(resp);
-
-            return tiposEducacion;
+            return result;
         }
     }
 }

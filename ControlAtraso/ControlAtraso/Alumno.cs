@@ -13,64 +13,17 @@ namespace ControlAtraso
 {
     public class Alumno
     {
-        public static string Enrolar(ControlAtraso.Entity.Persona persona)
+        public static ControlAtraso.Result<string> Enrolar(ControlAtraso.Entity.Persona persona)
         {
-            string output = string.Empty;
-
-            Random random = new Random();
-
-            int indice = random.Next(0, 4);
-
-            string[] claves = System.Configuration.ConfigurationManager.AppSettings["PalabrasClave"].Split(',');
-
-            string token = claves[indice];
-
-            byte[] encryted = System.Text.Encoding.Unicode.GetBytes(token);
-
-            token = Convert.ToBase64String(encryted);
-
             string url = System.Configuration.ConfigurationManager.AppSettings["targetUrl"];
 
             url = string.Format("{0}/Enrolar", url);
 
-            try
-            {
-                output = JsonConvert.SerializeObject(persona, Formatting.Indented);
+            ControlAtraso.Helper h = new Helper();
 
-                byte[] data = UTF8Encoding.UTF8.GetBytes(output);
+            ControlAtraso.Result<string> result = h.Call<string>(CallType.CallTypePost, url, persona);
 
-                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
-
-                request.Timeout = 10 * 1000;
-                request.Method = "POST";
-                request.ContentLength = data.Length;
-                request.ContentType = "application/json; charset=utf-8";
-
-                request.Headers.Add("token", token);
-
-                Stream postStream = request.GetRequestStream();
-
-                postStream.Write(data, 0, data.Length);
-
-                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
-
-                StreamReader reader = new StreamReader(response.GetResponseStream());
-
-                string resp = reader.ReadToEnd();
-
-                // Cerramos los streams
-                reader.Close();
-
-                postStream.Close();
-
-                response.Close();
-
-                return "Ok";
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
+            return result;
         }
 
         public static ControlAtraso.Entity.Alumno Registrar(Sample sample)
@@ -153,153 +106,58 @@ namespace ControlAtraso
             return alumno;
         }
 
-        public static List<ControlAtraso.Entity.Alumno> GetAll(ControlAtraso.Entity.Curso curso)
+        public static Result<ControlAtraso.Entity.Alumno> Get(int runCuero, char runDigito)
+        {
+            ControlAtraso.Parameters parameters = new ControlAtraso.Parameters();
+
+            string url = string.Format("{0}/Alumno?anioNumero={1}&rbdCuerpo={2}&rbdDigito={3}&runCuerpo={4}&runDigito={5}", parameters.Url, DateTime.Today.Year, parameters.Rbd.Substring(0, parameters.Rbd.Length - 1), parameters.Rbd.Substring(parameters.Rbd.Length - 1, 1), runCuero, runDigito);
+
+            ControlAtraso.Helper h = new Helper();
+
+            ControlAtraso.Result<ControlAtraso.Entity.Alumno> result = h.Call<ControlAtraso.Entity.Alumno>(CallType.CallTypeGet, url);
+
+            return result;
+        }
+
+        public static Result<List<ControlAtraso.Entity.Alumno>> GetAll(ControlAtraso.Entity.Curso curso)
         {
             if (curso == null || curso.Id.Equals(default(Guid)))
             {
                 return null;
             }
 
-            Random random = new Random();
+            ControlAtraso.Parameters parameters = new ControlAtraso.Parameters();
 
-            int indice = random.Next(0, 4);
+            string url = string.Format("{0}/Alumnos?anioNumero={1}&rbdCuerpo={2}&rbdDigito={3}&cursoId={4}", parameters.Url, DateTime.Today.Year, parameters.Rbd.Substring(0, parameters.Rbd.Length - 1), parameters.Rbd.Substring(parameters.Rbd.Length - 1, 1), (curso == null ? default(Guid) : curso.Id));
 
-            string[] claves = System.Configuration.ConfigurationManager.AppSettings["PalabrasClave"].Split(',');
+            ControlAtraso.Helper h = new Helper();
 
-            string token = claves[indice];
+            ControlAtraso.Result<List<ControlAtraso.Entity.Alumno>> result = h.Call<List<ControlAtraso.Entity.Alumno>>(CallType.CallTypeGet, url);
 
-            byte[] encryted = System.Text.Encoding.Unicode.GetBytes(token);
+            if (result.Entity.Count > 1)
+            {
+                result.Entity = result.Entity.OrderBy(x => x.Persona.Nombre).ToList<ControlAtraso.Entity.Alumno>();
+            }
 
-            token = Convert.ToBase64String(encryted);
-
-            System.Configuration.Configuration configuration = System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Environment.GetCommandLineArgs()[0]);
-
-            string url = configuration.AppSettings.Settings["targetUrl"].Value;
-
-            string rbdCuerpo = configuration.AppSettings.Settings["rbd"].Value; ;
-
-            url = string.Format("{0}/Alumnos?anioNumero={1}&rbdCuerpo={2}&rbdDigito={3}&cursoId={4}", url, DateTime.Today.Year, rbdCuerpo.Substring(0, rbdCuerpo.Length - 1), rbdCuerpo.Substring(rbdCuerpo.Length - 1, 1), (curso == null ? default(Guid) : curso.Id));
-
-            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
-
-            request.Timeout = 10 * 1000;
-            request.Method = "GET";
-            request.ContentType = "application/json; charset=utf-8";
-
-            request.Headers.Add("token", token);
-
-            HttpWebResponse response = request.GetResponse() as HttpWebResponse;
-
-            StreamReader reader = new StreamReader(response.GetResponseStream());
-
-            string resp = reader.ReadToEnd();
-
-            // Cerramos los streams
-            reader.Close();
-
-            response.Close();
-
-            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-
-            List<ControlAtraso.Entity.Alumno> alumnos = javaScriptSerializer.Deserialize<List<ControlAtraso.Entity.Alumno>>(resp);
-
-            return alumnos.Count > 1 ? alumnos.OrderBy(x => x.Persona.Nombre).ToList<ControlAtraso.Entity.Alumno>() : alumnos;
+            return result;
         }
 
-        public static List<ControlAtraso.Entity.Alumno> GetAll(int runCuero, char runDigito)
+        public static Result<List<ControlAtraso.Entity.Alumno>> GetAll(string nombre)
         {
-            Random random = new Random();
+            ControlAtraso.Parameters parameters = new ControlAtraso.Parameters();
 
-            int indice = random.Next(0, 4);
+            string url = url = string.Format("{0}/AlumnosFindName?anioNumero={1}&rbdCuerpo={2}&rbdDigito={3}&nombre={4}", parameters.Url, DateTime.Today.Year, parameters.Rbd.Substring(0, parameters.Rbd.Length - 1), parameters.Rbd.Substring(parameters.Rbd.Length - 1, 1), nombre);
 
-            string[] claves = System.Configuration.ConfigurationManager.AppSettings["PalabrasClave"].Split(',');
+            ControlAtraso.Helper h = new Helper();
 
-            string token = claves[indice];
+            ControlAtraso.Result<List<ControlAtraso.Entity.Alumno>> result = h.Call<List<ControlAtraso.Entity.Alumno>>(CallType.CallTypeGet, url);
 
-            byte[] encryted = System.Text.Encoding.Unicode.GetBytes(token);
+            if (result.Entity.Count > 1)
+            {
+                result.Entity = result.Entity.OrderBy(x => x.Persona.Nombre).ToList<ControlAtraso.Entity.Alumno>();
+            }
 
-            token = Convert.ToBase64String(encryted);
-
-            string url = System.Configuration.ConfigurationManager.AppSettings["targetUrl"];
-
-            string rbdCuerpo = System.Configuration.ConfigurationManager.AppSettings["rbd"];
-
-            url = string.Format("{0}/Alumno?anioNumero={1}&rbdCuerpo={2}&rbdDigito={3}&runCuerpo={4}&runDigito={5}", url, DateTime.Today.Year, rbdCuerpo.Substring(0, rbdCuerpo.Length - 1), rbdCuerpo.Substring(rbdCuerpo.Length - 1, 1), runCuero, runDigito);
-
-            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
-
-            request.Timeout = 10 * 1000;
-            request.Method = "GET";
-            request.ContentType = "application/json; charset=utf-8";
-
-            request.Headers.Add("token", token);
-
-            HttpWebResponse response = request.GetResponse() as HttpWebResponse;
-
-            StreamReader reader = new StreamReader(response.GetResponseStream());
-
-            string resp = reader.ReadToEnd();
-
-            // Cerramos los streams
-            reader.Close();
-
-            response.Close();
-
-            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-
-            ControlAtraso.Entity.Alumno alumno = javaScriptSerializer.Deserialize<ControlAtraso.Entity.Alumno>(resp);
-
-            List<ControlAtraso.Entity.Alumno> alumnos = new List<ControlAtraso.Entity.Alumno>();
-
-            alumnos.Add(alumno);
-
-            return alumnos;
-        }
-
-        public static List<ControlAtraso.Entity.Alumno> GetAll(string nombre)
-        {
-            Random random = new Random();
-
-            int indice = random.Next(0, 4);
-
-            string[] claves = System.Configuration.ConfigurationManager.AppSettings["PalabrasClave"].Split(',');
-
-            string token = claves[indice];
-
-            byte[] encryted = System.Text.Encoding.Unicode.GetBytes(token);
-
-            token = Convert.ToBase64String(encryted);
-
-            string url = System.Configuration.ConfigurationManager.AppSettings["targetUrl"];
-
-            string rbdCuerpo = System.Configuration.ConfigurationManager.AppSettings["rbd"];
-
-            url = string.Format("{0}/AlumnosFindName?anioNumero={1}&rbdCuerpo={2}&rbdDigito={3}&nombre={4}", url, DateTime.Today.Year, rbdCuerpo.Substring(0, rbdCuerpo.Length - 1), rbdCuerpo.Substring(rbdCuerpo.Length - 1, 1), nombre);
-
-            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
-
-            request.Timeout = 10 * 1000;
-            request.Method = "GET";
-            request.ContentType = "application/json; charset=utf-8";
-
-            request.Headers.Add("token", token);
-
-            HttpWebResponse response = request.GetResponse() as HttpWebResponse;
-
-            StreamReader reader = new StreamReader(response.GetResponseStream());
-
-            string resp = reader.ReadToEnd();
-
-            // Cerramos los streams
-            reader.Close();
-
-            response.Close();
-
-            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-
-            List<ControlAtraso.Entity.Alumno> alumnos = javaScriptSerializer.Deserialize<List<ControlAtraso.Entity.Alumno>>(resp);
-
-            return alumnos.Count > 1 ? alumnos.OrderBy(x => x.Persona.Nombre).ToList<ControlAtraso.Entity.Alumno>() : alumnos;
+            return result;
         }
     }
 }

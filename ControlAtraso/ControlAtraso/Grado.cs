@@ -11,57 +11,30 @@ namespace ControlAtraso
 {
     public class Grado
     {
-        public static List<ControlAtraso.Entity.Grado> GetAll(ControlAtraso.Entity.TipoEducacion tipoEducacion)
+        public static Result<List<ControlAtraso.Entity.Grado>> GetAll(ControlAtraso.Entity.TipoEducacion tipoEducacion)
         {
+            ControlAtraso.Result<List<ControlAtraso.Entity.Grado>> result;
+
             if (tipoEducacion.Codigo < 0)
             {
-                return new List<ControlAtraso.Entity.Grado>();
+                result = new ControlAtraso.Result<List<ControlAtraso.Entity.Grado>>
+                {
+                    Status = ControlAtraso.Status.Ok,
+                    Entity = new List<ControlAtraso.Entity.Grado>()
+                };
+
+                return result;
             }
 
-            Random random = new Random();
+            ControlAtraso.Parameters parameters = new ControlAtraso.Parameters();
 
-            int indice = random.Next(0, 4);
+            string url = string.Format("{0}/Grados?anioNumero={1}&tipoEducacionCodigo={2}&rbdCuerpo={3}&rbdDigito={4}", parameters.Url, DateTime.Today.Year, (tipoEducacion == null ? "-1" : tipoEducacion.Codigo.ToString()), parameters.Rbd.Substring(0, parameters.Rbd.Length - 1), parameters.Rbd.Substring(parameters.Rbd.Length - 1, 1));
 
-            string[] claves = System.Configuration.ConfigurationManager.AppSettings["PalabrasClave"].Split(',');
+            ControlAtraso.Helper h = new Helper();
 
-            string token = claves[indice];
+            result = h.Call<List<ControlAtraso.Entity.Grado>>(CallType.CallTypeGet, url);
 
-            byte[] encryted = System.Text.Encoding.Unicode.GetBytes(token);
-
-            token = Convert.ToBase64String(encryted);
-
-            System.Configuration.Configuration configuration = System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Environment.GetCommandLineArgs()[0]);
-
-            string url = configuration.AppSettings.Settings["targetUrl"].Value;
-
-            string rbdCuerpo = configuration.AppSettings.Settings["rbd"].Value; ;
-
-            url = string.Format("{0}/Grados?anioNumero={1}&tipoEducacionCodigo={2}&rbdCuerpo={3}&rbdDigito={4}", url, DateTime.Today.Year, (tipoEducacion == null ? "-1" : tipoEducacion.Codigo.ToString()), rbdCuerpo.Substring(0, rbdCuerpo.Length - 1), rbdCuerpo.Substring(rbdCuerpo.Length - 1, 1));
-
-            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
-
-            request.Timeout = 10 * 1000;
-            request.Method = "GET";
-            request.ContentType = "application/json; charset=utf-8";
-
-            request.Headers.Add("token", token);
-
-            HttpWebResponse response = request.GetResponse() as HttpWebResponse;
-
-            StreamReader reader = new StreamReader(response.GetResponseStream());
-
-            string resp = reader.ReadToEnd();
-
-            // Cerramos los streams
-            reader.Close();
-
-            response.Close();
-
-            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-
-            List<ControlAtraso.Entity.Grado> grados = javaScriptSerializer.Deserialize<List<ControlAtraso.Entity.Grado>>(resp);
-
-            return grados;
+            return result;
         }
     }
 }

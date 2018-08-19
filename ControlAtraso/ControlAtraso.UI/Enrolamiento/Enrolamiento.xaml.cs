@@ -199,11 +199,22 @@ namespace ControlAtraso.UI.Enrolamiento
                             ImagenHuella = ms.GetBuffer()
                         };
 
-                        ControlAtraso.Alumno.Enrolar(persona);
+                        ControlAtraso.Result<string> result = ControlAtraso.Alumno.Enrolar(persona);
 
-                        MessageBox.Show("El alumno fue enrolado", "Insignia", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+                        if (result.Status.Equals(ControlAtraso.Status.Ok))
+                        {
+                            MessageBox.Show("El alumno fue enrolado", "Insignia", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
 
-                        this.Back_Click(null, null);
+                            this.Back_Click(null, null);
+                        }
+                        else
+                        {
+                            this.Message.Foreground = System.Windows.Media.Brushes.Red;
+
+                            MessageBox.Show(result.Message, "Insignia", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+
+                            break;
+                        }
 
                         break;
                     }

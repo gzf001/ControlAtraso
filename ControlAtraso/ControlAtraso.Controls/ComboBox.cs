@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace ControlAtraso.Controls
@@ -21,21 +22,6 @@ namespace ControlAtraso.Controls
             comboBoxItem.IsSelected = true;
 
             this.Items.Add(comboBoxItem);
-        }
-
-        public void LoadTipoEducacion()
-        {
-            this.Clear();
-
-            foreach (ControlAtraso.Entity.TipoEducacion tipoEducacion in ControlAtraso.TipoEducacion.GetAll())
-            {
-                ComboBoxItem comboBoxItem = new ComboBoxItem();
-
-                comboBoxItem.Content = string.Format("{0} {1}", tipoEducacion.Codigo, tipoEducacion.Nombre);
-                comboBoxItem.Tag = tipoEducacion.Codigo;
-
-                this.Items.Add(comboBoxItem);
-            }
         }
 
         protected override void OnInitialized(EventArgs e)

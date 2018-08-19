@@ -22,6 +22,12 @@ namespace ControlAtraso.UI
     /// </summary>
     public partial class MainWindow : Window, DPFP.Capture.EventHandler
     {
+        public static bool Valid
+        {
+            get;
+            set;
+        }
+
         public static DPFP.Capture.Capture Capturer
         {
             get;
@@ -47,31 +53,46 @@ namespace ControlAtraso.UI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            try
+            if (ControlAtraso.Helper.AccesoInternet())
             {
-                System.Windows.Threading.DispatcherTimer dispathcer = new System.Windows.Threading.DispatcherTimer();
-
-                dispathcer.Interval = new TimeSpan(0, 0, 1);
-
-                dispathcer.Tick += (x, y) =>
+                try
                 {
-                    this.Now.Text = string.Format("{0} {1}", DateTime.Today.ToString("D", new System.Globalization.CultureInfo("es-ES")), DateTime.Now.ToLongTimeString());
-                };
+                    System.Windows.Threading.DispatcherTimer dispathcer = new System.Windows.Threading.DispatcherTimer();
 
-                dispathcer.Start();
+                    dispathcer.Interval = new TimeSpan(0, 0, 1);
 
-                Capturer = new DPFP.Capture.Capture();
+                    dispathcer.Tick += (x, y) =>
+                    {
+                        this.Now.Text = string.Format("{0} {1}", DateTime.Today.ToString("D", new System.Globalization.CultureInfo("es-ES")), DateTime.Now.ToLongTimeString());
+                    };
 
-                if (Capturer != null)
+                    dispathcer.Start();
+
+                    Capturer = new DPFP.Capture.Capture();
+
+                    if (Capturer != null)
+                    {
+                        Capturer.EventHandler = this;
+
+                        Capturer.StartCapture();
+                    }
+
+                    ControlAtraso.UI.MainWindow.Valid = true;
+                }
+                catch
                 {
-                    Capturer.EventHandler = this;
+                    ControlAtraso.UI.MainWindow.Valid = false;
 
-                    Capturer.StartCapture();
+                    MessageBox.Show("Primero instale el driver del lector de huella", "Insignia", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+
+                    this.Close();
                 }
             }
-            catch
+            else
             {
-                MessageBox.Show("Primero instale el driver del lector de huella", "Insignia", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                ControlAtraso.UI.MainWindow.Valid = false;
+
+                MessageBox.Show("Por favor compruebe su conexión a Internet\n(no se puede establer conexión con el servidor Insignia)", "Insignia", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 this.Close();
             }

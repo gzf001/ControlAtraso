@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ControlAtraso.UI.MVVM.ViewModel
@@ -180,13 +181,28 @@ namespace ControlAtraso.UI.MVVM.ViewModel
                     Nombre = "[Seleccione]"
                 };
 
-                List<ControlAtraso.Entity.TipoEducacion> tiposEducacion = ControlAtraso.TipoEducacion.GetAll();
+                List<ControlAtraso.Entity.TipoEducacion> tiposEducacion = new List<ControlAtraso.Entity.TipoEducacion>();
 
-                tiposEducacion.Add(tipoEducacion);
+                ControlAtraso.Result<List<ControlAtraso.Entity.TipoEducacion>> result = ControlAtraso.TipoEducacion.GetAll();
 
-                tiposEducacion = tiposEducacion.OrderBy(x => x.Codigo).ToList<ControlAtraso.Entity.TipoEducacion>();
+                if (result.Status.Equals(ControlAtraso.Status.Ok))
+                {
+                    tiposEducacion = result.Entity;
 
-                return tiposEducacion;
+                    tiposEducacion.Add(tipoEducacion);
+
+                    tiposEducacion = tiposEducacion.OrderBy(x => x.Codigo).ToList<ControlAtraso.Entity.TipoEducacion>();
+
+                    return tiposEducacion;
+                }
+                else
+                {
+                    MessageBox.Show(result.Message, "Insignia", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                    tiposEducacion.Add(tipoEducacion);
+
+                    return tiposEducacion;
+                }
             }
         }
 
@@ -224,19 +240,34 @@ namespace ControlAtraso.UI.MVVM.ViewModel
         {
             get
             {
-                ControlAtraso.Entity.Grado tipoEducacion = new ControlAtraso.Entity.Grado
+                ControlAtraso.Entity.Grado grado = new ControlAtraso.Entity.Grado
                 {
                     Codigo = -1,
                     Nombre = "[Seleccione]"
                 };
 
-                List<ControlAtraso.Entity.Grado> grados = ControlAtraso.Grado.GetAll(this.TipoEducacion);
+                List<ControlAtraso.Entity.Grado> grados = new List<ControlAtraso.Entity.Grado>();
 
-                grados.Add(tipoEducacion);
+                ControlAtraso.Result<List<ControlAtraso.Entity.Grado>> result = ControlAtraso.Grado.GetAll(this.TipoEducacion);
 
-                grados = grados.OrderBy(x => x.Codigo).ToList<ControlAtraso.Entity.Grado>();
+                if (result.Status.Equals(ControlAtraso.Status.Ok))
+                {
+                    grados = result.Entity;
 
-                return grados;
+                    grados.Add(grado);
+
+                    grados = grados.OrderBy(x => x.Codigo).ToList<ControlAtraso.Entity.Grado>();
+
+                    return grados;
+                }
+                else
+                {
+                    MessageBox.Show(result.Message, "Insignia", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                    grados.Add(grado);
+
+                    return grados;
+                }
             }
         }
 
@@ -266,9 +297,21 @@ namespace ControlAtraso.UI.MVVM.ViewModel
 
                 OnPropertyChanged("Curso");
 
-                this.Alumnos = ControlAtraso.Alumno.GetAll(this.Curso);
+                ControlAtraso.Result<List<ControlAtraso.Entity.Alumno>> result = ControlAtraso.Alumno.GetAll(this.Curso);
 
-                OnPropertyChanged("Alumnos");
+                if (result != null)
+                {
+                    if (result.Status.Equals(ControlAtraso.Status.Ok))
+                    {
+                        this.Alumnos = result.Entity;
+
+                        OnPropertyChanged("Alumnos");
+                    }
+                    else
+                    {
+                        MessageBox.Show(result.Message, "Insignia", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
             }
         }
 
@@ -282,13 +325,28 @@ namespace ControlAtraso.UI.MVVM.ViewModel
                     Nombre = "[Seleccione]"
                 };
 
-                List<ControlAtraso.Entity.Curso> cursos = ControlAtraso.Curso.GetAll(this.Grado);
+                List<ControlAtraso.Entity.Curso> cursos = new List<ControlAtraso.Entity.Curso>();
 
-                cursos.Add(curso);
+                ControlAtraso.Result<List<ControlAtraso.Entity.Curso>> result = ControlAtraso.Curso.GetAll(this.Grado);
 
-                cursos = cursos.OrderBy(x => x.GradoCodigo).ToList<ControlAtraso.Entity.Curso>();
+                if (result.Status.Equals(ControlAtraso.Status.Ok))
+                {
+                    cursos = result.Entity;
 
-                return cursos;
+                    cursos.Add(curso);
+
+                    cursos = cursos.OrderBy(x => x.GradoCodigo).ToList<ControlAtraso.Entity.Curso>();
+
+                    return cursos;
+                }
+                else
+                {
+                    MessageBox.Show(result.Message, "Insignia", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                    cursos.Add(curso);
+
+                    return cursos;
+                }
             }
         }
 
@@ -332,14 +390,27 @@ namespace ControlAtraso.UI.MVVM.ViewModel
         {
             if (!string.IsNullOrEmpty(this.RunCuerpo))
             {
-                this.Alumnos = ControlAtraso.Alumno.GetAll(int.Parse(this.RunCuerpo), this.RunDigito);
+                ControlAtraso.Result<ControlAtraso.Entity.Alumno> result = ControlAtraso.Alumno.Get(int.Parse(this.RunCuerpo), this.RunDigito);
 
-                if (this.Alumnos[0].Persona == null)
+                if (result.Status.Equals(ControlAtraso.Status.Ok))
                 {
-                    System.Windows.MessageBox.Show("La búsqueda no arrojo resultados", "Insignia", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
-                }
+                    if (result.Entity.Persona == null)
+                    {
+                        System.Windows.MessageBox.Show("La búsqueda no arrojo resultados", "Insignia", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                    }
+                    else
+                    {
+                        this.Alumnos = new List<ControlAtraso.Entity.Alumno>();
 
-                OnPropertyChanged("Alumnos");
+                        this.Alumnos.Add(result.Entity);
+                    }
+
+                    OnPropertyChanged("Alumnos");
+                }
+                else
+                {
+                    MessageBox.Show(result.Message, "Insignia", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             else if (!string.IsNullOrEmpty(this.Nombre))
             {
@@ -349,14 +420,23 @@ namespace ControlAtraso.UI.MVVM.ViewModel
                 }
                 else
                 {
-                    this.Alumnos = ControlAtraso.Alumno.GetAll(this.Nombre);
+                    ControlAtraso.Result<List<ControlAtraso.Entity.Alumno>> result = ControlAtraso.Alumno.GetAll(this.Nombre);
 
-                    if (this.Alumnos.Count == 0)
+                    if (result.Status.Equals(ControlAtraso.Status.Ok))
                     {
-                        System.Windows.MessageBox.Show("La búsqueda no arrojo resultados", "Insignia", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
-                    }
+                        this.Alumnos = result.Entity;
 
-                    OnPropertyChanged("Alumnos");
+                        if (result.Entity.Count == 0)
+                        {
+                            System.Windows.MessageBox.Show("La búsqueda no arrojo resultados", "Insignia", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                        }
+
+                        OnPropertyChanged("Alumnos");
+                    }
+                    else
+                    {
+                        MessageBox.Show(result.Message, "Insignia", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
         }

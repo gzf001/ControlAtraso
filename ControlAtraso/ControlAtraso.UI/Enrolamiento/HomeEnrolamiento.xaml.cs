@@ -51,11 +51,16 @@ namespace ControlAtraso.UI.Enrolamiento
         {
             if (this.DataGrid.Items.Count > 0)
             {
-                ControlAtraso.UI.Enrolamiento.Enrolamiento.HomeEnrolamiento = this;
+                ControlAtraso.Entity.Alumno alumno = this.DataGrid.SelectedItems[0] as ControlAtraso.Entity.Alumno;
 
-                ControlAtraso.UI.Enrolamiento.Enrolamiento enrolamiento = new ControlAtraso.UI.Enrolamiento.Enrolamiento(this.DataGrid.SelectedItems[0] as ControlAtraso.Entity.Alumno);
+                if (!alumno.Estado.Equals("No válido"))
+                {
+                    ControlAtraso.UI.Enrolamiento.Enrolamiento.HomeEnrolamiento = this;
 
-                NavigationService.Navigate(enrolamiento);
+                    ControlAtraso.UI.Enrolamiento.Enrolamiento enrolamiento = new ControlAtraso.UI.Enrolamiento.Enrolamiento(this.DataGrid.SelectedItems[0] as ControlAtraso.Entity.Alumno);
+
+                    NavigationService.Navigate(enrolamiento);
+                }
             }
         }
 

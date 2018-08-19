@@ -23,55 +23,37 @@ namespace ControlAtraso
                 return new ControlAtraso.Entity.Establecimiento();
             }
 
-            Random random = new Random();
-
-            int indice = random.Next(0, 4);
-
-            string[] claves = System.Configuration.ConfigurationManager.AppSettings["PalabrasClave"].Split(',');
-
-            string token = claves[indice];
-
-            byte[] encryted = System.Text.Encoding.Unicode.GetBytes(token);
-
-            token = Convert.ToBase64String(encryted);
-
-            string url = System.Configuration.ConfigurationManager.AppSettings["Url"];
+            string url = configuration.AppSettings.Settings["Url"].Value;
 
             url = string.Format("{0}/Establecimiento?rbdCuerpo={1}&rbdDigito={2}", url, rbdCuerpo, rbdDigito);
 
-            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+            ControlAtraso.Helper h = new Helper();
 
-            request.Timeout = 10 * 1000;
-            request.Method = "GET";
-            request.ContentType = "application/json; charset=utf-8";
+            ControlAtraso.Result<ControlAtraso.Entity.Establecimiento> result = h.Call<ControlAtraso.Entity.Establecimiento>(CallType.CallTypeGet, url);
 
-            request.Headers.Add("token", token);
-
-            HttpWebResponse response = request.GetResponse() as HttpWebResponse;
-
-            StreamReader reader = new StreamReader(response.GetResponseStream());
-
-            string resp = reader.ReadToEnd();
-
-            // Cerramos los streams
-            reader.Close();
-
-            response.Close();
-
-            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-
-            ControlAtraso.Entity.Establecimiento establecimiento = javaScriptSerializer.Deserialize<ControlAtraso.Entity.Establecimiento>(resp);
-
-            if (establecimiento.Estado.Equals("Válido"))
+            if (result.Status.Equals(ControlAtraso.Status.Ok))
             {
-                configuration.AppSettings.Settings.Add("establecimiento", establecimiento.Nombre);
-                configuration.AppSettings.Settings.Add("rbd", string.Format("{0}{1}", rbdCuerpo, rbdDigito));
-                configuration.AppSettings.Settings.Add("targetUrl", establecimiento.Url);
+                if (result.Entity.Estado.Equals("Válido"))
+                {
+                    configuration.AppSettings.Settings.Add("establecimiento", result.Entity.Nombre);
+                    configuration.AppSettings.Settings.Add("rbd", string.Format("{0}{1}", rbdCuerpo, rbdDigito));
+                    configuration.AppSettings.Settings.Add("targetUrl", result.Entity.Url);
 
-                configuration.Save();
+                    configuration.Save();
+                }
+
+                return result.Entity;
             }
+            else
+            {
+                ControlAtraso.Entity.Establecimiento establecimiento = new ControlAtraso.Entity.Establecimiento
+                {
+                    Estado = "No Válido",
+                    Mensaje = "Se ha producido un error de comunicación con el servidor Insignia, por favor contacte a soporte@netcore.cl"
+                };
 
-            return establecimiento;
+                return establecimiento;
+            }
         }
     }
 }
