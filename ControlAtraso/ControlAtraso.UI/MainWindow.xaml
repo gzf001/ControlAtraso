@@ -25,10 +25,15 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Grid.Column="0" Background="#425567">
-            <Image HorizontalAlignment="Left" Height="100" Margin="10,10,0,0" Source="/Assets/NetCore.png"/>
+            <Image HorizontalAlignment="Left" Height="100" Margin="5,10,0,0" Source="/Assets/NetCore.png"/>
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="1" Background="#425567">
-            <TextBlock Grid.Row="0" Text="NetCore - Insignia - Registro de Atrasos" Foreground="White" Margin="20,60,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Verdana" FontSize="26"/>
+            <TextBlock Name="About" Grid.Row="0" Margin="0,6,10,0" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Hyperlink Click="About_Click" Foreground="White" FontFamily="Verdana" FontSize="12">
+                    Acerca de...
+                </Hyperlink>
+            </TextBlock>
+            <TextBlock Grid.Row="0" Text="NetCore - Insignia - Registro de Atrasos" Foreground="White" Margin="20,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Verdana" FontSize="26"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
             <Grid>

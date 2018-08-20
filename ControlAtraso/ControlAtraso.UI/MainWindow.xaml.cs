@@ -165,5 +165,12 @@ namespace ControlAtraso.UI
                 Capturer.StopCapture();
             }
         }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            ControlAtraso.UI.About about = new ControlAtraso.UI.About();
+
+            about.ShowDialog();
+        }
     }
 }

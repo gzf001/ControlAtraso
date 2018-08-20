@@ -15,7 +15,11 @@ namespace ControlAtraso
     {
         public static ControlAtraso.Result<string> Enrolar(ControlAtraso.Entity.Persona persona)
         {
-            string url = System.Configuration.ConfigurationManager.AppSettings["targetUrl"];
+            string startupPath = System.Environment.GetCommandLineArgs()[0];
+
+            System.Configuration.Configuration configuration = System.Configuration.ConfigurationManager.OpenExeConfiguration(startupPath);
+
+            string url = configuration.AppSettings.Settings["targetUrl"].Value;
 
             url = string.Format("{0}/Enrolar", url);
 
@@ -34,15 +38,17 @@ namespace ControlAtraso
 
             int indice = random.Next(0, 4);
 
-            string[] claves = System.Configuration.ConfigurationManager.AppSettings["PalabrasClave"].Split(',');
+            string startupPath = System.Environment.GetCommandLineArgs()[0];
+
+            System.Configuration.Configuration configuration = System.Configuration.ConfigurationManager.OpenExeConfiguration(startupPath);
+
+            string[] claves = configuration.AppSettings.Settings["PalabrasClave"].Value.Split(',');
 
             string token = claves[indice];
 
             byte[] encryted = System.Text.Encoding.Unicode.GetBytes(token);
 
             token = Convert.ToBase64String(encryted);
-
-            System.Configuration.Configuration configuration = System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Environment.GetCommandLineArgs()[0]);
 
             string url = configuration.AppSettings.Settings["targetUrl"].Value;
 

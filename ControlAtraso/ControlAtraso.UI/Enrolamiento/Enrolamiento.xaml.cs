@@ -230,9 +230,14 @@ namespace ControlAtraso.UI.Enrolamiento
                 ControlAtraso.UI.MainWindow.Capturer.EventHandler = ControlAtraso.UI.MainWindow.Main;
             }
 
-            NavigationService.Navigate(ControlAtraso.UI.Enrolamiento.Enrolamiento.HomeEnrolamiento);
+            if (sender == null && ControlAtraso.UI.Enrolamiento.Enrolamiento.HomeEnrolamiento.DataGrid.Items.CurrentItem != null)
+            {
+                int indice = ControlAtraso.UI.Enrolamiento.Enrolamiento.HomeEnrolamiento.DataGrid.Items.IndexOf(ControlAtraso.UI.Enrolamiento.Enrolamiento.Alumno);
 
-            //NavigationService.Navigate(new ControlAtraso.UI.Enrolamiento.HomeEnrolamiento());
+                (ControlAtraso.UI.Enrolamiento.Enrolamiento.HomeEnrolamiento.DataGrid.Items[indice] as ControlAtraso.Entity.Alumno).Persona.Enrolado = true;
+            }
+
+            NavigationService.Navigate(ControlAtraso.UI.Enrolamiento.Enrolamiento.HomeEnrolamiento);
         }
     }
 }

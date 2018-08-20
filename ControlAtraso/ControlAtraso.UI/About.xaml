@@ -1,0 +1,46 @@
+﻿<Window x:Class="ControlAtraso.UI.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Acera de..."
+        Height="330"
+        Width="360"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        BorderThickness="3"
+        BorderBrush="#425567"
+        Topmost="True"
+        ShowInTaskbar="False"
+        Icon="NetCore.ico">
+    <Grid Background="#FFE5E5E5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.Column="0">
+            <Image HorizontalAlignment="Left" Height="100" Margin="0,10,0,0" Source="/Assets/NetCore.png"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="0" Grid.Column="1" Foreground="#425567" Margin="10,28,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Verdana" FontSize="9.5">
+            NetCore Insignia<LineBreak/><LineBreak/>
+            Permite registrar los atrasos de los alumnos,<LineBreak/>
+            en comunicación directa con el sistema Insignia.
+        </TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Foreground="#425567" Margin="10,40,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontFamily="Verdana" FontSize="9.5">
+            Creado por <Bold>Inversiones Castellano Limitada</Bold>, siempre con el<LineBreak/>
+            ánimo de incorporar tecnología de punta al quehacer educacional.<LineBreak/>
+        </TextBlock>
+        <TextBlock Name="TecnicalData" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Foreground="#425567" Margin="10,40,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontFamily="Verdana" FontSize="9.5">
+            Versión del Framework: 4.6.1<LineBreak/>
+            Versión de la aplicación: <LineBreak/>
+        </TextBlock>
+    </Grid>
+</Window>
